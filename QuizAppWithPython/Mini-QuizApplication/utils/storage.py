@@ -1,6 +1,7 @@
 import json, os
 
-DATA_FILE = "data/users.json"
+DATA_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "users.json")
+DATA_FILE = os.path.abspath(DATA_FILE)
 
 def load_users():
     if not os.path.exists(DATA_FILE):
