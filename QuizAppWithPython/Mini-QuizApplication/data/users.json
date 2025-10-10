@@ -1,0 +1,11 @@
+{
+    "ChienNT": {
+        "password": "12345",
+        "role": "teacher",
+        "fullname": "Nguyễn Thế Chiến",
+        "dob": "04/04/2005",
+        "address": "Khu phố Xuân Đài",
+        "subject": "Toán",
+        "degree": "Thạc sĩ"
+    }
+}

@@ -1,0 +1,20 @@
+<RegisterScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 20
+        padding: 30
+
+        Label:
+            text: "Chọn loại tài khoản"
+
+        Button:
+            text: "Giảng viên"
+            on_release: app.root.current = "register_teacher"
+
+        Button:
+            text: "Học sinh"
+            on_release: app.root.current = "register_student"
+
+        Button:
+            text: "Quay lại"
+            on_release: app.root.current = "login"
