@@ -3,11 +3,11 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 
 # import các screen
-from screens.login import LoginScreen
-from screens.register import RegisterScreen
-from screens.register_teacher import RegisterTeacherScreen
-from screens.register_student import RegisterStudentScreen
-from screens.home import HomeScreen
+from app.screens.login import LoginScreen
+from app.screens.register import RegisterScreen
+from app.screens.register_teacher import RegisterTeacherScreen
+from app.screens.register_student import RegisterStudentScreen
+from app.screens.home import HomeScreen
 
 class QuizApp(App):
     def build(self):
