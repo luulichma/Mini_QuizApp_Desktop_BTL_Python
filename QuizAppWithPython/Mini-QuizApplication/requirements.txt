@@ -1,0 +1,4 @@
+kivy
+kivymd
+pymongo
+python-dotenv

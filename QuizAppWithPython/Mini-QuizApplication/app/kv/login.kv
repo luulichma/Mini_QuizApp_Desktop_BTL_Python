@@ -1,0 +1,29 @@
+<LoginScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: "Đăng nhập"
+
+        TextInput:
+            id: username
+            hint_text: "Tên đăng nhập"
+
+        TextInput:
+            id: password
+            hint_text: "Mật khẩu"
+            password: True
+
+        Button:
+            text: "Đăng nhập"
+            on_release: root.do_login(username.text, password.text)
+
+        Button:
+            text: "Đăng ký"
+            on_release: app.root.current = "register"
+
+        Label:
+            id: status
+            text: ""
