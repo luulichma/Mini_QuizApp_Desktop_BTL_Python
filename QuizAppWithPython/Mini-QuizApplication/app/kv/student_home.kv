@@ -1,0 +1,45 @@
+<StudentHomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: '40dp'
+            Label:
+                text: 'Trang học sinh'
+                font_size: '18sp'
+            Button:
+                text: 'Đăng xuất'
+                size_hint_x: None
+                width: '100dp'
+                on_release: root.logout()
+
+        RecycleView:
+            viewclass: 'QuizItem'
+            data: [{'title': q['title'], 'description': q['description'], 'id': q['_id']} for q in root.quizzes]
+
+        #:import Label kivy.uix.label.Label
+
+<QuizItem@BoxLayout>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: self.minimum_height
+    padding: 8
+    spacing: 4
+
+    Label:
+        text: root.title
+        bold: True
+        size_hint_y: None
+        height: self.texture_size[1]
+    Label:
+        text: root.description or ''
+        size_hint_y: None
+        height: self.texture_size[1]
+    Button:
+        text: 'Bắt đầu'
+        size_hint_y: None
+        height: '36dp'
+        on_release: app.root.current = 'home'  # placeholder action

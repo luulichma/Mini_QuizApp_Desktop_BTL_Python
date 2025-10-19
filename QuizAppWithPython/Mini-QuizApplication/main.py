@@ -8,6 +8,8 @@ from app.screens.register import RegisterScreen
 from app.screens.register_teacher import RegisterTeacherScreen
 from app.screens.register_student import RegisterStudentScreen
 from app.screens.home import HomeScreen
+from app.screens.student_home import StudentHomeScreen
+
 
 class QuizApp(App):
     def build(self):
@@ -16,6 +18,7 @@ class QuizApp(App):
         Builder.load_file("app/kv/register.kv")
         Builder.load_file("app/kv/register_teacher.kv")
         Builder.load_file("app/kv/register_student.kv")
+        Builder.load_file("app/kv/student_home.kv")
         Builder.load_file("app/kv/home.kv")
 
         sm = ScreenManager()
@@ -23,8 +26,10 @@ class QuizApp(App):
         sm.add_widget(RegisterScreen(name="register"))
         sm.add_widget(RegisterTeacherScreen(name="register_teacher"))
         sm.add_widget(RegisterStudentScreen(name="register_student"))
+        sm.add_widget(StudentHomeScreen(name="student_home"))
         sm.add_widget(HomeScreen(name="home"))
         return sm
+
 
 if __name__ == "__main__":
     QuizApp().run()
