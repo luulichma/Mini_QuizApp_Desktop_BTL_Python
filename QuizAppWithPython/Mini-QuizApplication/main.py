@@ -12,11 +12,11 @@ from app.screens.home import HomeScreen
 class QuizApp(App):
     def build(self):
         # Load tất cả file .kv
-        Builder.load_file("kv/login.kv")
-        Builder.load_file("kv/register.kv")
-        Builder.load_file("kv/register_teacher.kv")
-        Builder.load_file("kv/register_student.kv")
-        Builder.load_file("kv/home.kv")
+        Builder.load_file("app/kv/login.kv")
+        Builder.load_file("app/kv/register.kv")
+        Builder.load_file("app/kv/register_teacher.kv")
+        Builder.load_file("app/kv/register_student.kv")
+        Builder.load_file("app/kv/home.kv")
 
         sm = ScreenManager()
         sm.add_widget(LoginScreen(name="login"))

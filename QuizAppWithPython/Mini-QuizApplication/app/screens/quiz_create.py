@@ -1,8 +1,9 @@
 from kivy.uix.screenmanager import Screen
-from utils.storage import load_quizzes, save_quizzes
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from app.services import quiz_services
+
 
 class QuizCreateScreen(Screen):
     quiz_name = ObjectProperty(None)
@@ -20,16 +21,9 @@ class QuizCreateScreen(Screen):
             Popup(title="Lỗi", content=Label(text="Vui lòng nhập đầy đủ thông tin!")).open()
             return
 
-        quizzes = load_quizzes()
-        quizzes.append({
-            "name": name,
-            "description": desc,
-            "questions": [{
-                "question": question,
-                "answer": answer
-            }]
-        })
-        save_quizzes(quizzes)
+        # For now we don't have a user_id; use a placeholder or later hook to App user
+        quiz_id = quiz_services.create_quiz(user_id="000000000000000000000000", title=name, description=desc)
+        quiz_services.add_question(quiz_id, question, answer)
         Popup(title="Thành công", content=Label(text="Quiz đã được tạo!")).open()
         self.quiz_name.text = ""
         self.quiz_desc.text = ""

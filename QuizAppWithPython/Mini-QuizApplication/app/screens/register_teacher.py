@@ -1,20 +1,18 @@
 from kivy.uix.screenmanager import Screen
-from utils.storage import load_users, save_users
+from app.services.auth_services import register_user
+
 
 class RegisterTeacherScreen(Screen):
     def do_register(self, fullname, dob, address, username, password, subject, degree):
-        users = load_users()
-        if username in users:
-            self.ids.status.text = "Tên đăng nhập đã tồn tại!"
-            return
-        users[username] = {
-            "password": password,
-            "role": "teacher",
+        profile = {
             "fullname": fullname,
             "dob": dob,
             "address": address,
             "subject": subject,
-            "degree": degree
+            "degree": degree,
         }
-        save_users(users)
+        success, msg = register_user(username, password, "teacher", profile)
+        if not success:
+            self.ids.status.text = "Tên đăng nhập đã tồn tại!"
+            return
         self.ids.status.text = "Đăng ký thành công!"
