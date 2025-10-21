@@ -1,0 +1,93 @@
+<QuizCreateScreen>:
+    name: "quiz_create"
+
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: 0.15, 0.5, 0.95, 1  # nền xanh gradient
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        # Thanh top bar
+        BoxLayout:
+            size_hint_y: 0.12
+            padding: [20, 10]
+            spacing: 20
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 0.15
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Label:
+                text: "QuizApp"
+                bold: True
+                font_size: 22
+                color: 1, 1, 1, 1
+                size_hint_x: 0.3
+
+            Label:
+                text: "Create Quiz"
+                font_size: 20
+                color: 1, 1, 1, 1
+
+            Button:
+                text: "← Back"
+                size_hint_x: 0.2
+                background_color: 1, 1, 1, 0.2
+                color: 1, 1, 1, 1
+                on_release: root.go_back()
+
+        # Nội dung chính
+        ScrollView:
+            do_scroll_x: False
+            GridLayout:
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                padding: [40, 20]
+                spacing: 20
+
+                Label:
+                    text: "Tạo Quiz (nhiều câu hỏi, nhiều đáp án)"
+                    font_size: 22
+                    color: 1, 1, 1, 1
+                    size_hint_y: None
+                    height: 40
+
+                TextInput:
+                    id: quiz_name
+                    hint_text: "Tên Quiz"
+                    size_hint_y: None
+                    height: 50
+                    background_color: 1, 1, 1, 0.2
+                    foreground_color: 1, 1, 1, 1
+                    font_size: 18
+                    padding: [10, 8]
+
+                GridLayout:
+                    id: question_container
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: 20
+
+                Button:
+                    text: "➕ Thêm câu hỏi"
+                    size_hint_y: None
+                    height: 50
+                    background_color: 1, 1, 1, 0.25
+                    color: 1, 1, 1, 1
+                    on_release: root.add_question_block()
+
+                Button:
+                    text: "Tạo Quiz"
+                    size_hint_y: None
+                    height: 55
+                    font_size: 18
+                    background_color: 1, 1, 1, 0.25
+                    color: 1, 1, 1, 1
+                    on_release: root.save_quiz()

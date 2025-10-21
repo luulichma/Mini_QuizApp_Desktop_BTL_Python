@@ -8,12 +8,18 @@ class LoginScreen(Screen):
         success, payload = login_user(username, password)
         if success:
             app = App.get_running_app()
-            # store minimal user info on the App instance for later use
-            app.user = payload
-            # route based on role
+            app.user = payload 
+
+            # phân nhánh role
             if payload.get("role") == "student":
+                student_home = self.manager.get_screen("student_home")
+                student_home.current_user = payload 
                 self.manager.current = "student_home"
-            else:
-                self.manager.current = "home"
+
+            elif payload.get("role") == "teacher":
+                teacher_home = self.manager.get_screen("teacher_home")
+                teacher_home.current_user = payload  
+                self.manager.current = "teacher_home"
+
         else:
             self.ids.status.text = "Sai tài khoản hoặc mật khẩu!"

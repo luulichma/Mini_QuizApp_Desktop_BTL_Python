@@ -1,0 +1,158 @@
+<TeacherHomeScreen>:
+    name: "teacher_home"
+
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: 0.15, 0.5, 1, 1  # nền xanh gradient
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        # ======= Thanh menu trên cùng =======
+        BoxLayout:
+            size_hint_y: 0.12
+            padding: [20, 10]
+            spacing: 20
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 0.15
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Label:
+                text: "[b]QuizApp[/b]"
+                markup: True
+                font_size: 24
+                color: 1, 1, 1, 1
+                size_hint_x: 0.3
+
+            BoxLayout:
+                spacing: 30
+                size_hint_x: 0.5
+
+                Button:
+                    id: btn_home
+                    text: "Home"
+                    background_color: (1, 1, 1, 0.25 if root.current_tab == 'home' else 0)
+                    color: (1, 1, 1, 1)
+                    font_size: 16
+                    on_release: root.switch_tab('home')
+
+                Button:
+                    id: btn_library
+                    text: "Library"
+                    background_color: (1, 1, 1, 0.25 if root.current_tab == 'library' else 0)
+                    color: (1, 1, 1, 1)
+                    font_size: 16
+                    on_release: root.switch_tab('library')
+
+                Button:
+                    id: btn_class
+                    text: "Class"
+                    background_color: (1, 1, 1, 0.25 if root.current_tab == 'class' else 0)
+                    color: (1, 1, 1, 1)
+                    font_size: 16
+                    on_release: root.switch_tab('class')
+
+            Button:
+                text: "Menu"
+                size_hint_x: 0.2
+                background_color: 0, 0, 0, 0
+                color: 1, 1, 1, 1
+                on_release: root.open_menu()
+
+        # ======= Nội dung chính =======
+        FloatLayout:
+            id: content_area
+
+            # ===== Home Tab =====
+            BoxLayout:
+                id: home_tab
+                orientation: "vertical"
+                spacing: 20
+                size_hint: (1, 1)
+                opacity: 1
+                disabled: False
+
+                Widget:  # khoảng trống trên
+
+                Label:
+                    text: "Welcome, teacher!"
+                    font_size: 32
+                    bold: True
+                    color: 1, 1, 1, 1
+                    halign: "center"
+                    size_hint_y: None
+                    height: 60
+
+                Button:
+                    text: "Create quiz"
+                    size_hint: (0.25, None)
+                    height: 50
+                    pos_hint: {"center_x": 0.5}
+                    background_color: 1, 1, 1, 0.25
+                    color: 1, 1, 1, 1
+                    font_size: 18
+                    on_release: root.go_to_create_quiz()
+
+                Widget:  # khoảng trống dưới
+
+            # ===== Library Tab =====
+            BoxLayout:
+                id: library_tab
+                orientation: "vertical"
+                size_hint: (1, 1)
+                padding: [0, 40, 0, 0]  # đẩy nội dung xuống một chút
+                opacity: 0
+                disabled: False
+
+                Label:
+                    text: "Danh sách Quiz đã tạo:"
+                    font_size: 24
+                    color: 1, 1, 1, 1
+                    size_hint_y: None
+                    height: 40
+                    halign: "center"
+                    valign: "middle"
+                    pos_hint: {"center_x": 0.5}
+
+                ScrollView:
+                    do_scroll_x: False
+                    size_hint_y: None
+                    height: self.parent.height - 100  # giữ cố định
+                    GridLayout:
+                        id: quiz_list
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        spacing: 10
+                        padding: [0, 10]
+                        pos_hint: {"center_x": 0.5}
+
+            # ===== Class Tab =====
+            BoxLayout:
+                id: class_tab
+                orientation: "vertical"
+                size_hint: (1, 1)
+                padding: [0, 40, 0, 0]
+                opacity: 0
+                disabled: False
+                
+                Label:
+                    text: "Danh sách lớp đang giảng dạy:"
+                    font_size: 24
+                    color: 1, 1, 1, 1
+                    size_hint_y: None
+                    height: 40
+                    halign: "center"
+                    valign: "middle"
+                    pos_hint: {"center_x": 0.5}
+
+                Label:
+                    text: "Tính năng đang phát triển..."
+                    color: 1, 1, 1, 0.8
+                    font_size: 18
+                    halign: "center"

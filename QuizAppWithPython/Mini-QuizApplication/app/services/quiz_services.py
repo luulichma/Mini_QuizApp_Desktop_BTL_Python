@@ -3,17 +3,12 @@ from app.databases.schema import quiz_schema, question_schema, option_schema
 from typing import List, Dict, Any, Optional
 from bson import ObjectId
 
-
 def create_quiz(user_id: str, title: str, description: str) -> str:
-	"""Create a quiz document and return its inserted id as string."""
 	doc = quiz_schema(user_id, title, description)
 	res = QUIZZES.insert_one(doc)
 	return str(res.inserted_id)
 
-
 def add_question(quiz_id: str, question_title: str, correct_answer: str, options: Optional[List[Dict[str, Any]]] = None) -> str:
-	"""Add a question to QUESTIONS collection; options is a list of {'text':..., 'display_order':...}.
-	Returns question id string."""
 	q = question_schema(quiz_id, question_title, correct_answer)
 	res = QUESTIONS.insert_one(q)
 	qid = str(res.inserted_id)
@@ -25,14 +20,27 @@ def add_question(quiz_id: str, question_title: str, correct_answer: str, options
 
 	return qid
 
+def list_quizzes_by_user(user_id: str) -> List[Dict[str, Any]]:
+	cursor = QUIZZES.find({"user_id": ObjectId(user_id)}).sort("created_at", -1)
+	return [
+		{
+			"_id": str(q["_id"]),
+			"title": q["title"],
+			"description": q.get("description", ""),
+			"created_at": q.get("created_at")
+		}
+		for q in cursor
+	]
+
 
 def list_quizzes() -> List[Dict[str, Any]]:
-	out = []
-	for q in QUIZZES.find():
+	"""Return all quizzes (for students)."""
+	out: List[Dict[str, Any]] = []
+	for q in QUIZZES.find().sort("created_at", -1):
 		out.append({
 			"_id": str(q.get("_id")),
 			"title": q.get("title"),
-			"description": q.get("description"),
+			"description": q.get("description", ""),
 			"created_at": q.get("created_at")
 		})
 	return out
