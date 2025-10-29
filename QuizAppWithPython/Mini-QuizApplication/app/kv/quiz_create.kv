@@ -30,6 +30,7 @@
                 size_hint_x: 0.3
 
             Label:
+                id: screen_title
                 text: "Create Quiz"
                 font_size: 20
                 color: 1, 1, 1, 1
@@ -66,6 +67,17 @@
                     background_color: 1, 1, 1, 0.2
                     foreground_color: 1, 1, 1, 1
                     font_size: 18
+                    padding: [10, 8]
+
+                TextInput:
+                    id: quiz_description
+                    hint_text: "Mô tả Quiz (không bắt buộc)"
+                    size_hint_y: None
+                    height: 80  # Cho phép nhập nhiều hơn
+                    multiline: True
+                    background_color: 1, 1, 1, 0.2
+                    foreground_color: 1, 1, 1, 1
+                    font_size: 16
                     padding: [10, 8]
 
                 GridLayout:
