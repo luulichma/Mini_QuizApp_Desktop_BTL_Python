@@ -1,45 +1,150 @@
-<StudentHomeScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        padding: 10
-        spacing: 10
 
+#:kivy 2.1.0
+#:import Factory kivy.factory.Factory
+
+<HistoryListItem@BoxLayout>:
+    size_hint_y: None
+    height: '70dp'
+    padding: [15, 10]
+    spacing: 15
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.1
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [8]
+
+    Label:
+        id: history_quiz_title
+        text: "Quiz Title"
+        font_size: 18
+        halign: 'left'
+        valign: 'middle'
+        text_size: self.width, None
+        color: 1, 1, 1, 1
+
+    Label:
+        id: history_quiz_score
+        text: "Score: 0/0"
+        size_hint_x: 0.4
+        font_size: 18
+        bold: True
+        color: 0.8, 0.9, 1, 1
+
+<StudentHomeScreen>:
+    name: "student_home"
+
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: 0.15, 0.5, 1, 1 # Nền xanh gradient
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        # ======= Thanh top bar =======
         BoxLayout:
-            size_hint_y: None
-            height: '40dp'
+            size_hint_y: 0.12
+            padding: [20, 10]
+            spacing: 20
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 0.15
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
             Label:
-                text: 'Trang học sinh'
-                font_size: '18sp'
+                text: "[b]QuizApp[/b]"
+                markup: True
+                font_size: 24
+                color: 1, 1, 1, 1
+                size_hint_x: 0.8
+
             Button:
-                text: 'Đăng xuất'
-                size_hint_x: None
-                width: '100dp'
+                text: "Đăng xuất"
+                size_hint_x: 0.2
+                background_color: 0, 0, 0, 0
+                color: 1, 1, 1, 1
                 on_release: root.logout()
 
-        RecycleView:
-            viewclass: 'QuizItem'
-            data: [{'title': q['title'], 'description': q['description'], 'id': q['_id']} for q in root.quizzes]
+        # ======= Nội dung chính với TabbedPanel =======
+        TabbedPanel:
+            id: content_tabs
+            do_default_tab: True
+            tab_pos: 'top_mid'
+            tab_width: 200
+            background_color: (0, 0, 0, 0) # Nền trong suốt
 
-        #:import Label kivy.uix.label.Label
+            TabbedPanelItem:
+                id: home_tab_item
+                text: "Làm bài"
+                background_color: (0.15, 0.5, 1, 1)
+                BoxLayout:
+                    orientation: "vertical"
+                    spacing: 20
+                    padding: 40
+                    size_hint_y: None
+                    height: self.minimum_height
+                    pos_hint: {'center_y': 0.6}
 
-<QuizItem@BoxLayout>:
-    orientation: 'vertical'
-    size_hint_y: None
-    height: self.minimum_height
-    padding: 8
-    spacing: 4
+                    Label:
+                        text: "Nhập ID để bắt đầu làm bài"
+                        font_size: 22
+                        size_hint_y: None
+                        height: 40
+                        color: 1, 1, 1, 0.9
 
-    Label:
-        text: root.title
-        bold: True
-        size_hint_y: None
-        height: self.texture_size[1]
-    Label:
-        text: root.description or ''
-        size_hint_y: None
-        height: self.texture_size[1]
-    Button:
-        text: 'Bắt đầu'
-        size_hint_y: None
-        height: '36dp'
-        on_release: app.root.current = 'home'  # placeholder action
+                    TextInput:
+                        id: quiz_id_input
+                        hint_text: "ID bài quiz"
+                        size_hint_y: None
+                        height: 50
+                        font_size: 18
+                        halign: 'center'
+                        multiline: False
+                        background_color: 1, 1, 1, 0.2
+                        foreground_color: 1, 1, 1, 1
+
+                    Button:
+                        text: "Bắt đầu"
+                        size_hint_y: None
+                        height: 50
+                        font_size: 18
+                        background_color: 1, 1, 1, 0.25
+                        on_release: root.start_quiz_by_id()
+
+            TabbedPanelItem:
+                text: "Lịch sử"
+                background_color: (0.15, 0.5, 1, 1)
+                on_release: root.load_history()
+                BoxLayout:
+                    orientation: "vertical"
+                    padding: [0, 10, 0, 0]
+                    ScrollView:
+                        do_scroll_x: False
+                        GridLayout:
+                            id: history_list
+                            cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
+                            spacing: 10
+                            padding: [10, 10]
+
+            TabbedPanelItem:
+                text: "Tài khoản"
+                background_color: (0.15, 0.5, 1, 1)
+                BoxLayout:
+                    orientation: "vertical"
+                    padding: 40
+                    spacing: 20
+                    size_hint_y: None
+                    height: self.minimum_height
+                    pos_hint: {'center_y': 0.6}
+                    Button:
+                        text: "Đổi mật khẩu"
+                        size_hint_y: None
+                        height: 50
+                        on_release: root.go_to_change_password()

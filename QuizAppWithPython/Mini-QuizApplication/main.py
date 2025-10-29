@@ -10,7 +10,9 @@ from app.screens.register_student import RegisterStudentScreen
 from app.screens.home import HomeScreen
 from app.screens.student_home import StudentHomeScreen
 from app.screens.teacher_home import TeacherHomeScreen
-from app.screens.quiz_create import QuizCreateScreen  
+from app.screens.quiz_create import QuizCreateScreen
+from app.screens.quiz_player import QuizPlayerScreen
+from app.screens.change_password import ChangePasswordScreen
 
 class QuizApp(App):
     def build(self):
@@ -21,7 +23,9 @@ class QuizApp(App):
         Builder.load_file("app/kv/register_student.kv")
         Builder.load_file("app/kv/student_home.kv")
         Builder.load_file("app/kv/teacher_home.kv")
-        Builder.load_file("app/kv/quiz_create.kv")  
+        Builder.load_file("app/kv/quiz_create.kv")
+        Builder.load_file("app/kv/quiz_player.kv")
+        Builder.load_file("app/kv/change_password.kv")
 
         # Tạo ScreenManager và thêm các màn hình
         sm = ScreenManager()
@@ -31,7 +35,9 @@ class QuizApp(App):
         sm.add_widget(RegisterStudentScreen(name="register_student"))
         sm.add_widget(StudentHomeScreen(name="student_home"))
         sm.add_widget(TeacherHomeScreen(name="teacher_home"))
-        sm.add_widget(QuizCreateScreen(name="quiz_create")) 
+        sm.add_widget(QuizCreateScreen(name="quiz_create"))
+        sm.add_widget(QuizPlayerScreen(name="quiz_player"))
+        sm.add_widget(ChangePasswordScreen(name="change_password"))
         sm.add_widget(HomeScreen(name="home"))
 
         return sm

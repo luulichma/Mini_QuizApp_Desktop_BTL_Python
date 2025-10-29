@@ -1,0 +1,55 @@
+<QuizPlayerScreen>:
+    name: 'quiz_player'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 15
+        canvas.before:
+            Color:
+                rgba: 0.15, 0.5, 1, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Label:
+            id: quiz_title
+            text: ''
+            font_size: 24
+            bold: True
+            size_hint_y: 0.1
+            color: 1, 1, 1, 1
+
+        Label:
+            id: question_counter
+            text: ''
+            size_hint_y: 0.05
+            color: 1, 1, 1, 0.8
+
+        Label:
+            id: question_label
+            text: 'Đang tải câu hỏi...'
+            font_size: 20
+            size_hint_y: 0.3
+            text_size: self.width, None
+            valign: 'middle'
+            halign: 'center'
+            color: 1, 1, 1, 1
+
+        BoxLayout:
+            id: options_container
+            orientation: 'vertical'
+            spacing: 10
+            size_hint_y: 0.4
+
+        BoxLayout:
+            size_hint_y: 0.1
+            spacing: 20
+            Button:
+                text: 'Quay lại'
+                background_color: 1, 0.3, 0.3, 0.8
+                on_release: root.go_back()
+            Button:
+                id: next_button
+                text: 'Câu tiếp theo'
+                background_color: 0.2, 0.8, 0.4, 1
+                on_release: root.next_question()

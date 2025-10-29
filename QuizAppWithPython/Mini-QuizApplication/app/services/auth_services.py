@@ -47,3 +47,29 @@ def login_user(username: str, password: str):
         return True, {"_id": str(user["_id"]), "username": user["username"], "role": user.get("role")}
     else:
         return False, "Invalid username or password"
+
+
+def change_password(user_id: str, old_password: str, new_password: str):
+    """
+    Changes the password for a given user.
+    Returns (success: bool, message: str)
+    """
+    try:
+        uid = ObjectId(user_id)
+    except Exception:
+        return False, "Invalid user ID format"
+
+    user = USERS.find_one({"_id": uid})
+
+    if not user:
+        return False, "User not found"
+
+    # Verify old password
+    if user.get("password") != hash_password(old_password):
+        return False, "Incorrect old password"
+
+    # Update with new password
+    new_hashed_password = hash_password(new_password)
+    USERS.update_one({"_id": uid}, {"$set": {"password": new_hashed_password}})
+
+    return True, "Password updated successfully"
