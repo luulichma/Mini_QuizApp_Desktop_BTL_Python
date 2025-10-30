@@ -1,36 +1,40 @@
-
 #:kivy 2.1.0
 #:import Factory kivy.factory.Factory
 
 <HistoryListItem@BoxLayout>:
     size_hint_y: None
-    height: '70dp'
+    height: dp(70)
     padding: [15, 10]
     spacing: 15
     canvas.before:
         Color:
-            rgba: 1, 1, 1, 0.1
+            rgba: 1, 1, 1, 1  # Thẻ trắng
         RoundedRectangle:
             size: self.size
             pos: self.pos
-            radius: [8]
+            radius: [10]
+        Color:
+            rgba: 0, 0, 0, 0.08  # Viền mảnh
+        Line:
+            rounded_rectangle: [self.x, self.y, self.width, self.height, 10]
 
     Label:
         id: history_quiz_title
         text: "Quiz Title"
-        font_size: 18
+        font_size: "16sp"
         halign: 'left'
         valign: 'middle'
-        text_size: self.width, None
-        color: 1, 1, 1, 1
+        text_size: self.size
+        color: 0.15, 0.15, 0.15, 1
 
     Label:
         id: history_quiz_score
-        text: "Score: 0/0"
+        text: "Điểm: 0/0"
         size_hint_x: 0.4
-        font_size: 18
+        font_size: "16sp"
         bold: True
-        color: 0.8, 0.9, 1, 1
+        color: 0.85, 0.15, 0.15, 1  # Đỏ nhấn
+
 
 <StudentHomeScreen>:
     name: "student_home"
@@ -39,19 +43,20 @@
         orientation: "vertical"
         canvas.before:
             Color:
-                rgba: 0.15, 0.5, 1, 1 # Nền xanh gradient
+                rgba: 1, 1, 1, 1  # Nền trắng sáng
             Rectangle:
                 size: self.size
                 pos: self.pos
 
-        # ======= Thanh top bar =======
+        # ======= Thanh top bar (đỏ chủ đạo) =======
         BoxLayout:
-            size_hint_y: 0.12
-            padding: [20, 10]
-            spacing: 20
+            size_hint_y: None
+            height: dp(65)
+            padding: [dp(25), dp(10)]
+            spacing: dp(20)
             canvas.before:
                 Color:
-                    rgba: 1, 1, 1, 0.15
+                    rgba: 0.9, 0.1, 0.1, 1  # Đỏ chủ đạo (#E53935)
                 Rectangle:
                     size: self.size
                     pos: self.pos
@@ -59,15 +64,24 @@
             Label:
                 text: "[b]QuizApp[/b]"
                 markup: True
-                font_size: 24
+                font_size: "24sp"
                 color: 1, 1, 1, 1
                 size_hint_x: 0.8
 
             Button:
                 text: "Đăng xuất"
                 size_hint_x: 0.2
-                background_color: 0, 0, 0, 0
+                font_size: "16sp"
+                background_normal: ""
+                background_color: 1, 1, 1, 0.15
                 color: 1, 1, 1, 1
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.15
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10]
                 on_release: root.logout()
 
         # ======= Nội dung chính với TabbedPanel =======
@@ -75,54 +89,101 @@
             id: content_tabs
             do_default_tab: True
             tab_pos: 'top_mid'
-            tab_width: 200
-            background_color: (0, 0, 0, 0) # Nền trong suốt
+            tab_width: dp(150)
+            background_color: 1, 1, 1, 1
+            tab_height: dp(45)
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1  # <-- Nền trắng cho TabbedPanel
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
+            # --- TAB: Làm bài ---
             TabbedPanelItem:
                 id: home_tab_item
                 text: "Làm bài"
-                background_color: (0.15, 0.5, 1, 1)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1  # <-- Nền trắng sáng cho vùng tab
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 BoxLayout:
                     orientation: "vertical"
-                    spacing: 20
-                    padding: 40
-                    size_hint_y: None
-                    height: self.minimum_height
+                    padding: dp(40)
+                    spacing: dp(20)
                     pos_hint: {'center_y': 0.6}
 
                     Label:
-                        text: "Nhập ID để bắt đầu làm bài"
-                        font_size: 22
+                        text: "Nhập ID bài Quiz để bắt đầu"
+                        font_size: "20sp"
+                        color: 0.15, 0.15, 0.15, 1
                         size_hint_y: None
-                        height: 40
-                        color: 1, 1, 1, 0.9
+                        height: dp(40)
 
-                    TextInput:
-                        id: quiz_id_input
-                        hint_text: "ID bài quiz"
+                    BoxLayout:
                         size_hint_y: None
-                        height: 50
-                        font_size: 18
-                        halign: 'center'
-                        multiline: False
-                        background_color: 1, 1, 1, 0.2
-                        foreground_color: 1, 1, 1, 1
-
+                        height: dp(50)
+                        canvas.before:
+                            Color:
+                                rgba: 0.96, 0.96, 0.96, 1
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [10]
+                        TextInput:
+                            id: quiz_id_input
+                            hint_text: "ID bài quiz"
+                            font_size: "16sp"
+                            halign: 'center'
+                            multiline: False
+                            background_normal: ""
+                            background_active: ""
+                            background_color: 0, 0, 0, 0
+                            foreground_color: 0.1, 0.1, 0.1, 1
+                            cursor_color: 0.9, 0.1, 0.1, 1  # Con trỏ đỏ
                     Button:
                         text: "Bắt đầu"
                         size_hint_y: None
-                        height: 50
-                        font_size: 18
-                        background_color: 1, 1, 1, 0.25
+                        height: dp(55)
+                        font_size: "16sp"
+                        bold: True
+                        background_normal: ""
+                        background_color: 0.9, 0.1, 0.1, 1  # Nút đỏ
+                        color: 1, 1, 1, 1
+                        canvas.before:
+                            Color:
+                                rgba: self.background_color
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [12]
                         on_release: root.start_quiz_by_id()
 
+            # --- TAB: Lịch sử ---
             TabbedPanelItem:
                 text: "Lịch sử"
-                background_color: (0.15, 0.5, 1, 1)
                 on_release: root.load_history()
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1  # <-- Nền trắng sáng
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 BoxLayout:
                     orientation: "vertical"
-                    padding: [0, 10, 0, 0]
+                    padding: [dp(15), dp(10)]
+                    spacing: dp(10)
+
+                    Label:
+                        text: "Kết quả các bài Quiz đã làm"
+                        font_size: "20sp"
+                        color: 0.15, 0.15, 0.15, 1
+                        bold: True
+                        size_hint_y: None
+                        height: dp(40)
+
                     ScrollView:
                         do_scroll_x: False
                         GridLayout:
@@ -130,21 +191,35 @@
                             cols: 1
                             size_hint_y: None
                             height: self.minimum_height
-                            spacing: 10
-                            padding: [10, 10]
+                            spacing: dp(10)
+                            padding: [0, dp(10)]
 
+            # --- TAB: Tài khoản ---
             TabbedPanelItem:
                 text: "Tài khoản"
-                background_color: (0.15, 0.5, 1, 1)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1  # <-- Nền trắng sáng
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 BoxLayout:
                     orientation: "vertical"
-                    padding: 40
-                    spacing: 20
-                    size_hint_y: None
-                    height: self.minimum_height
-                    pos_hint: {'center_y': 0.6}
+                    padding: dp(40)
+                    spacing: dp(20)
+
                     Button:
                         text: "Đổi mật khẩu"
                         size_hint_y: None
-                        height: 50
+                        height: dp(50)
+                        font_size: "16sp"
+                        background_normal: ""
+                        background_color: 1, 1, 1, 1
+                        color: 0.15, 0.15, 0.15, 1
+                        canvas.before:
+                            Color:
+                                rgba: 0.85, 0.85, 0.85, 1
+                            Line:
+                                width: 1.2
+                                rounded_rectangle: [self.x, self.y, self.width, self.height, 12]
                         on_release: root.go_to_change_password()

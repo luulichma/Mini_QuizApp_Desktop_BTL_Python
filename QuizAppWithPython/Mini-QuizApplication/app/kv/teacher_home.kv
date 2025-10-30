@@ -1,15 +1,46 @@
 <QuizListItem@BoxLayout>:
     size_hint_y: None
-    height: '90dp'
+    height: dp(90)
     padding: [15, 10]
     spacing: 15
     canvas.before:
         Color:
-            rgba: 1, 1, 1, 0.1  # Màu nền trắng mờ cho hiệu ứng thẻ
+            rgba: 1, 1, 1, 1  # Thẻ trắng
         RoundedRectangle:
             size: self.size
             pos: self.pos
-            radius: [8]
+            radius: [10]
+        Color:
+            rgba: 0, 0, 0, 0.1  # Viền mảnh
+        Line:
+            rounded_rectangle: [self.x, self.y, self.width, self.height, 10]
+
+    Label:
+        id: quiz_title
+        text: "Tên Quiz"
+        color: 0.15, 0.15, 0.15, 1
+        font_size: "16sp"
+        halign: "left"
+        valign: "middle"
+        text_size: self.size
+
+    Widget:
+
+    Button:
+        text: "Xem"
+        size_hint_x: 0.25
+        font_size: "14sp"
+        background_normal: ""
+        background_color: 0.9, 0.1, 0.1, 1
+        color: 1, 1, 1, 1
+        canvas.before:
+            Color:
+                rgba: self.background_color
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [8]
+
 
 <TeacherHomeScreen>:
     name: "teacher_home"
@@ -18,19 +49,20 @@
         orientation: "vertical"
         canvas.before:
             Color:
-                rgba: 0.15, 0.5, 1, 1
+                rgba: 1, 1, 1, 1  # Nền trắng tổng thể
             Rectangle:
                 size: self.size
                 pos: self.pos
 
-        # ======= Thanh top bar =======
+        # ======= Thanh top bar đỏ =======
         BoxLayout:
-            size_hint_y: 0.12
-            padding: [20, 10]
-            spacing: 20
+            size_hint_y: None
+            height: dp(65)
+            padding: [dp(25), dp(10)]
+            spacing: dp(20)
             canvas.before:
                 Color:
-                    rgba: 1, 1, 1, 0.15
+                    rgba: 0.9, 0.1, 0.1, 1  # Đỏ thương hiệu (#E53935)
                 Rectangle:
                     size: self.size
                     pos: self.pos
@@ -38,64 +70,113 @@
             Label:
                 text: "[b]QuizApp[/b]"
                 markup: True
-                font_size: 24
+                font_size: "24sp"
                 color: 1, 1, 1, 1
                 size_hint_x: 0.8
 
             Button:
                 text: "Đăng xuất"
                 size_hint_x: 0.2
-                background_color: 0, 0, 0, 0
+                font_size: "16sp"
+                background_normal: ""
+                background_color: 1, 1, 1, 0.15
                 color: 1, 1, 1, 1
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.15
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10]
                 on_release: root.logout()
 
-        # ======= Nội dung chính với TabbedPanel =======
+        # ======= TabbedPanel trắng tinh =======
         TabbedPanel:
             id: content_tabs
             do_default_tab: True
             tab_pos: 'top_mid'
-            tab_width: 150
-            background_color: (0, 0, 0, 0) # Nền trong suốt
-            
+            tab_width: dp(150)
+            tab_height: dp(45)
+
+            background_color: 1, 1, 1, 1
+            background_normal: ""       # ❗ Xóa nền xám mặc định
+            background_disabled: ""     # ❗ Chặn texture khi disabled
+            background_tab: ""          # ❗ Không vẽ nền tab tối
+
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1  # Nền trắng tuyệt đối
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            # ===== TAB: Trang chủ =====
             TabbedPanelItem:
                 id: home_tab_item
-                text: "Home"
-                background_color: (0.15, 0.5, 1, 1)
-                # ===== Home Tab =====
+                text: "Trang chủ"
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 BoxLayout:
-                    id: home_tab
                     orientation: "vertical"
-                    spacing: 20
+                    padding: dp(40)
+                    spacing: dp(25)
 
-                    Widget:  # khoảng trống trên
                     Label:
-                        text: "Welcome, teacher!"
-                        font_size: 32
+                        text: "Xin chào, Giảng viên!"
+                        font_size: "26sp"
                         bold: True
-                        color: 1, 1, 1, 1
+                        color: 0.15, 0.15, 0.15, 1
                         halign: "center"
+                        valign: "middle"
+                        text_size: self.size
                         size_hint_y: None
-                        height: 60
-                    Button:
-                        text: "Create quiz"
-                        size_hint: (0.25, None)
-                        height: 50
-                        pos_hint: {"center_x": 0.5}
-                        background_color: 1, 1, 1, 0.25
-                        color: 1, 1, 1, 1
-                        font_size: 18
-                        on_release: root.go_to_create_quiz()
-                    Widget:  # khoảng trống dưới
+                        height: dp(50)
 
+                    Button:
+                        text: "Tạo Quiz mới"
+                        size_hint: (0.35, None)
+                        height: dp(55)
+                        pos_hint: {"center_x": 0.5}
+                        background_normal: ""
+                        background_color: 0.9, 0.1, 0.1, 1
+                        color: 1, 1, 1, 1
+                        font_size: "16sp"
+                        bold: True
+                        canvas.before:
+                            Color:
+                                rgba: self.background_color
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [12]
+                        on_release: root.go_to_create_quiz()
+
+            # ===== TAB: Thư viện =====
             TabbedPanelItem:
-                text: "Library"
-                background_color: (0.15, 0.5, 1, 1)
-                on_release: root.load_quiz_library() # Tải library khi nhấn vào tab
-                # ===== Library Tab =====
+                text: "Thư viện Quiz"
+                on_release: root.load_quiz_library()
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 BoxLayout:
-                    id: library_tab
                     orientation: "vertical"
-                    padding: [0, 10, 0, 0]
+                    padding: [dp(15), dp(10)]
+                    spacing: dp(10)
+
+                    Label:
+                        text: "Danh sách Quiz đã tạo"
+                        font_size: "20sp"
+                        bold: True
+                        color: 0.15, 0.15, 0.15, 1
+                        size_hint_y: None
+                        height: dp(40)
 
                     ScrollView:
                         do_scroll_x: False
@@ -104,34 +185,54 @@
                             cols: 1
                             size_hint_y: None
                             height: self.minimum_height
-                            spacing: 10
-                            padding: [10, 10]
+                            spacing: dp(10)
+                            padding: [0, dp(10)]
 
+            # ===== TAB: Lớp học =====
             TabbedPanelItem:
-                text: "Class"
-                background_color: (0.15, 0.5, 1, 1)
-                # ===== Class Tab =====
+                text: "Lớp học"
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 BoxLayout:
-                    id: class_tab
                     orientation: "vertical"
+                    padding: dp(40)
                     Label:
                         text: "Tính năng đang phát triển..."
-                        color: 1, 1, 1, 0.8
-                        font_size: 18
+                        font_size: "16sp"
+                        color: 0.4, 0.4, 0.4, 1
                         halign: "center"
+                        valign: "middle"
 
+            # ===== TAB: Tài khoản =====
             TabbedPanelItem:
                 text: "Tài khoản"
-                background_color: (0.15, 0.5, 1, 1)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 BoxLayout:
                     orientation: "vertical"
-                    padding: 40
-                    spacing: 20
-                    size_hint_y: None
-                    height: self.minimum_height
-                    pos_hint: {'center_y': 0.6}
+                    padding: dp(40)
+                    spacing: dp(20)
+
                     Button:
                         text: "Đổi mật khẩu"
                         size_hint_y: None
-                        height: 50
+                        height: dp(50)
+                        font_size: "16sp"
+                        background_normal: ""
+                        background_color: 1, 1, 1, 1
+                        color: 0.15, 0.15, 0.15, 1
+                        canvas.before:
+                            Color:
+                                rgba: 0.85, 0.85, 0.85, 1
+                            Line:
+                                width: 1.2
+                                rounded_rectangle: [self.x, self.y, self.width, self.height, 12]
                         on_release: root.go_to_change_password()

@@ -1,20 +1,73 @@
 <RegisterScreen>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1  # nền trắng
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
     BoxLayout:
         orientation: "vertical"
-        spacing: 20
-        padding: 30
+        spacing: dp(25)
+        padding: dp(30), dp(100), dp(30), dp(30)
 
         Label:
             text: "Chọn loại tài khoản"
+            font_size: "24sp"
+            color: 0.15, 0.15, 0.15, 1
+            bold: True
+            halign: "center"
+            valign: "middle"
+            text_size: self.size
+
+        Widget:  # khoảng cách nhỏ
 
         Button:
             text: "Giảng viên"
+            font_size: "18sp"
+            background_normal: ""
+            background_color: 0.23, 0.51, 0.96, 1  # xanh pastel
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(55)
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [12]
             on_release: app.root.current = "register_teacher"
 
         Button:
             text: "Học sinh"
+            font_size: "18sp"
+            background_normal: ""
+            background_color: 0.9, 0.9, 0.9, 1
+            color: 0.1, 0.1, 0.1, 1
+            size_hint_y: None
+            height: dp(55)
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [12]
             on_release: app.root.current = "register_student"
 
         Button:
             text: "Quay lại"
+            font_size: "16sp"
+            background_normal: ""
+            background_color: 1, 1, 1, 1
+            color: 0.3, 0.3, 0.3, 1
+            size_hint_y: None
+            height: dp(50)
+            canvas.before:
+                Color:
+                    rgba: 0.85, 0.85, 0.85, 1
+                Line:
+                    width: 1.2
+                    rounded_rectangle: [self.x, self.y, self.width, self.height, 12]
             on_release: app.root.current = "login"
