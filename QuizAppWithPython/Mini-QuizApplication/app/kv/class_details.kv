@@ -1,0 +1,75 @@
+# app/kv/class_details.kv
+<ClassDetailsScreen>:
+    name: 'class_details'
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(40)
+        spacing: dp(25)
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            id: class_name_label
+            text: 'Tên lớp' 
+            font_size: '32sp'
+            bold: True
+            color: 0.1, 0.1, 0.1, 1
+
+        Label:
+            id: class_description_label
+            text: 'Mô tả lớp' 
+            font_size: '18sp'
+            color: 0.4, 0.4, 0.4, 1
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            TextInput:
+                id: student_id_input
+                hint_text: 'Mã sinh viên'
+                font_size: '18sp'
+                padding: [20, 20, 20, 20]
+            Button:
+                text: 'Thêm học sinh'
+                size_hint_x: 0.4
+                font_size: "18sp"
+                background_color: 0.2, 0.5, 1, 1
+                color: 1, 1, 1, 1
+                on_release: root.add_student()
+
+        Label:
+            text: 'Học sinh đã tham gia'
+            font_size: '24sp'
+            bold: True
+            color: 0.1, 0.1, 0.1, 1
+
+        ScrollView:
+            BoxLayout:
+                id: students_container
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(15)
+
+        Button:
+            text: 'Xóa lớp'
+            background_color: 0.8, 0.2, 0.2, 1
+            size_hint_y: None
+            height: dp(60)
+            font_size: "20sp"
+            bold: True
+            on_release: root.delete_class()
+
+        Button:
+            text: 'Quay lại danh sách lớp'
+            size_hint_y: None
+            height: dp(60)
+            font_size: "20sp"
+            background_color: 0.8, 0.8, 0.8, 1
+            color: 0.1, 0.1, 0.1, 1
+            on_release: root.go_back()

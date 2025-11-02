@@ -1,3 +1,6 @@
+from kivy.core.window import Window
+Window.maximize()
+
 from kivy.lang import Builder
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
@@ -13,6 +16,10 @@ from app.screens.teacher_home import TeacherHomeScreen
 from app.screens.quiz_create import QuizCreateScreen
 from app.screens.quiz_player import QuizPlayerScreen
 from app.screens.change_password import ChangePasswordScreen
+from app.screens.result import ResultScreen
+
+from app.screens.class_create import ClassCreateScreen
+from app.screens.class_details import ClassDetailsScreen
 
 class QuizApp(App):
     def build(self):
@@ -26,6 +33,9 @@ class QuizApp(App):
         Builder.load_file("app/kv/quiz_create.kv")
         Builder.load_file("app/kv/quiz_player.kv")
         Builder.load_file("app/kv/change_password.kv")
+        Builder.load_file("app/kv/result.kv")
+        Builder.load_file("app/kv/class_create.kv")
+        Builder.load_file("app/kv/class_details.kv")
 
         # Tạo ScreenManager và thêm các màn hình
         sm = ScreenManager()
@@ -38,6 +48,9 @@ class QuizApp(App):
         sm.add_widget(QuizCreateScreen(name="quiz_create"))
         sm.add_widget(QuizPlayerScreen(name="quiz_player"))
         sm.add_widget(ChangePasswordScreen(name="change_password"))
+        sm.add_widget(ResultScreen(name="result_screen"))
+        sm.add_widget(ClassCreateScreen(name="class_create"))
+        sm.add_widget(ClassDetailsScreen(name="class_details"))
         sm.add_widget(HomeScreen(name="home"))
 
         return sm

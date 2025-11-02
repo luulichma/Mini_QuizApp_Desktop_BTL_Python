@@ -1,0 +1,29 @@
+# app/kv/quiz_history.kv
+<QuizHistoryScreen>:
+    name: 'quiz_history'
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(10)
+
+        Label:
+            text: 'Lịch sử làm bài'
+            font_size: '24sp'
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        ScrollView:
+            size_hint_y: 1
+            BoxLayout:
+                id: history_container
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(5)
+
+        Button:
+            text: 'Quay lại trang chủ'
+            size_hint_y: None
+            height: dp(50)
+            on_release: root.go_back()

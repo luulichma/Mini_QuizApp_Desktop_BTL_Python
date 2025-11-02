@@ -1,0 +1,35 @@
+# app/kv/class_list.kv
+<ClassListScreen>:
+    name: 'class_list'
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(10)
+
+        Label:
+            text: 'Danh sách Lớp học của bạn'
+            font_size: '24sp'
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        ScrollView:
+            size_hint_y: 1
+            BoxLayout:
+                id: class_container
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(5)
+
+        Button:
+            text: 'Tạo lớp học mới'
+            size_hint_y: None
+            height: dp(50)
+            on_release: app.root.current = 'class_create'
+
+        Button:
+            text: 'Quay lại'
+            size_hint_y: None
+            height: dp(50)
+            on_release: root.go_back()

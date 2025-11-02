@@ -8,6 +8,7 @@ from functools import partial
 from kivy.factory import Factory
 from kivy.core.clipboard import Clipboard
 from app.services.quiz_services import list_quizzes_by_user, delete_quiz
+from app.services import class_services
 
 
 class TeacherHomeScreen(Screen):
@@ -40,7 +41,7 @@ class TeacherHomeScreen(Screen):
 
             quizzes = list_quizzes_by_user(user_id)
             if not quizzes:
-                quiz_list.add_widget(Label(text="(Chưa có quiz nào được tạo)", color=(1, 1, 1, 0.9), font_size=18))
+                quiz_list.add_widget(Label(text="(Chưa có quiz nào được tạo)", color=(0, 0, 0, 0.9), font_size=18))
                 return
 
             for q in quizzes:
@@ -50,21 +51,21 @@ class TeacherHomeScreen(Screen):
                 info_layout.add_widget(
                     Label(
                         text=q['title'], font_size=18, bold=True, halign='left',valign='middle',
-                        text_size=(self.width * 0.5, None), color=(1, 1, 1, 1)
+                        text_size=(self.width * 0.5, None), color=(0, 0, 0, 1)
                     )
                 )
                 info_layout.add_widget(
                     Label(
                         text=q.get('description', 'Không có mô tả'), font_size=14,
                         halign='left', valign='middle', text_size=(self.width * 0.5, None),
-                        color=(1, 1, 1, 0.8)
+                        color=(0, 0, 0, 0.8)
                     )
                 )
                 info_layout.add_widget(
                     Label(
                         text=f"ID: {q['_id']}", font_size=12,
                         halign='left', valign='middle', text_size=(self.width * 0.5, None),
-                        color=(1, 1, 1, 0.7)
+                        color=(0, 0, 0, 0.7)
                     )
                 )
 
@@ -101,7 +102,7 @@ class TeacherHomeScreen(Screen):
                 quiz_list.add_widget(item_layout)
 
         except Exception as e:
-            quiz_list.add_widget(Label(text=f"Lỗi tải quiz: {e}", color=(1, 0.5, 0.5, 1), font_size=16))
+            quiz_list.add_widget(Label(text=f"Lỗi tải quiz: {e}", color=(1, 0, 0, 1), font_size=16))
 
     def copy_quiz_id(self, quiz_id, *args):
         """Copies the quiz ID to the clipboard and shows a confirmation popup."""
@@ -153,6 +154,35 @@ class TeacherHomeScreen(Screen):
         create_screen.load_quiz_for_editing(quiz_id)
         self.manager.current = 'quiz_create'
 
+    def load_classes(self):
+        class_list_layout = self.ids.class_list
+        class_list_layout.clear_widgets()
+
+        if not self.current_user:
+            class_list_layout.add_widget(Label(text="Vui lòng đăng nhập lại", color=(0, 0, 0, 0.9), font_size=18))
+            return
+
+        try:
+            user_id = self.current_user.get("_id")
+            classes = class_services.list_classes_by_teacher(user_id)
+
+            if not classes:
+                class_list_layout.add_widget(Label(text="(Chưa có lớp học nào)", color=(0, 0, 0, 0.9), font_size=18))
+                return
+
+            for cls in classes:
+                item = Factory.ClassListItem()
+                item.ids.class_name.text = cls['class_name']
+                item.ids.class_description.text = cls.get('description', 'Không có mô tả')
+                item.ids.details_button.bind(on_release=partial(self.go_to_class_details, cls['_id']))
+                class_list_layout.add_widget(item)
+        except Exception as e:
+            class_list_layout.add_widget(Label(text=f"Lỗi tải lớp học: {e}", color=(1, 0, 0, 1)))
+
+    def go_to_class_details(self, class_id, *args):
+        details_screen = self.manager.get_screen('class_details')
+        details_screen.class_id = class_id
+        self.manager.current = 'class_details'
 
     # =========================
     # 🔹 Chuyển sang màn hình tạo quiz
@@ -169,6 +199,8 @@ class TeacherHomeScreen(Screen):
                 tab_panel.switch_to(tab)
                 if tab_name == "Library":
                     self.load_quiz_library()
+                elif tab_name == "Lớp học":
+                    self.load_classes()
                 break
 
     def go_to_change_password(self):

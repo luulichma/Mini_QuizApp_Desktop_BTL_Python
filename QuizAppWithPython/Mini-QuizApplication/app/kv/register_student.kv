@@ -1,7 +1,7 @@
 <RegisterStudentScreen>:
     canvas.before:
         Color:
-            rgba: 1, 1, 1, 1  # Nền trắng tinh
+            rgba: 0.95, 0.95, 0.95, 1  # Light gray background
         Rectangle:
             pos: self.pos
             size: self.size
@@ -14,241 +14,114 @@
             orientation: "vertical"
             size_hint_y: None
             height: self.minimum_height
-            spacing: dp(18)
-            padding: dp(25), dp(100), dp(25), dp(25)
+            spacing: dp(20)
+            padding: dp(40)
 
             Label:
-                text: "Đăng ký Học sinh"
-                font_size: "24sp"
+                text: "Tạo tài khoản Học sinh"
+                font_size: "32sp"
                 bold: True
-                color: 0.15, 0.15, 0.15, 1
-                halign: "center"
-                valign: "middle"
-                text_size: self.size
-                size_hint_y: None
-                height: dp(40)
+                color: 0.1, 0.1, 0.1, 1
 
-            # --- Họ và tên ---
-            BoxLayout:
+            # --- Full Name ---
+            TextInput:
+                id: fullname
+                hint_text: "Họ và tên"
+                multiline: False
                 size_hint_y: None
-                height: dp(50)
-                canvas.before:
-                    Color:
-                        rgba: 0.96, 0.96, 0.96, 1
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [10]
-                TextInput:
-                    id: fullname
-                    hint_text: "Họ và tên"
-                    background_normal: ""
-                    background_active: ""
-                    background_color: 0, 0, 0, 0
-                    foreground_color: 0.1, 0.1, 0.1, 1
-                    padding: [15, 15, 15, 15]
-                    cursor_color: 0.25, 0.5, 1, 1
-                    font_size: "16sp"
+                height: dp(60)
+                font_size: "18sp"
+                padding: [20, 20, 20, 20]
 
-            # --- Ngày sinh ---
-            BoxLayout:
+            # --- Date of Birth ---
+            TextInput:
+                id: dob
+                hint_text: "Ngày sinh (dd/mm/yyyy)"
+                multiline: False
                 size_hint_y: None
-                height: dp(50)
-                canvas.before:
-                    Color:
-                        rgba: 0.96, 0.96, 0.96, 1
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [10]
-                TextInput:
-                    id: dob
-                    hint_text: "Ngày sinh (dd/mm/yyyy)"
-                    background_normal: ""
-                    background_active: ""
-                    background_color: 0, 0, 0, 0
-                    foreground_color: 0.1, 0.1, 0.1, 1
-                    padding: [15, 15, 15, 15]
-                    cursor_color: 0.25, 0.5, 1, 1
-                    font_size: "16sp"
+                height: dp(60)
+                font_size: "18sp"
+                padding: [20, 20, 20, 20]
 
-            # --- ID ---
-            BoxLayout:
+            # --- Student ID ---
+            TextInput:
+                id: student_id
+                hint_text: "Mã sinh viên"
+                multiline: False
                 size_hint_y: None
-                height: dp(50)
-                canvas.before:
-                    Color:
-                        rgba: 0.96, 0.96, 0.96, 1
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [10]
-                TextInput:
-                    id: dob
-                    hint_text: "Mã sinh viên"
-                    background_normal: ""
-                    background_active: ""
-                    background_color: 0, 0, 0, 0
-                    foreground_color: 0.1, 0.1, 0.1, 1
-                    padding: [15, 15, 15, 15]
-                    cursor_color: 0.25, 0.5, 1, 1
-                    font_size: "16sp"
+                height: dp(60)
+                font_size: "18sp"
+                padding: [20, 20, 20, 20]
 
-            # --- Địa chỉ ---
-            BoxLayout:
+            # --- Address ---
+            TextInput:
+                id: address
+                hint_text: "Địa chỉ"
+                multiline: False
                 size_hint_y: None
-                height: dp(50)
-                canvas.before:
-                    Color:
-                        rgba: 0.96, 0.96, 0.96, 1
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [10]
-                TextInput:
-                    id: address
-                    hint_text: "Địa chỉ"
-                    background_normal: ""
-                    background_active: ""
-                    background_color: 0, 0, 0, 0
-                    foreground_color: 0.1, 0.1, 0.1, 1
-                    padding: [15, 15, 15, 15]
-                    cursor_color: 0.25, 0.5, 1, 1
-                    font_size: "16sp"
+                height: dp(60)
+                font_size: "18sp"
+                padding: [20, 20, 20, 20]
 
-            # --- Tên đăng nhập ---
-            BoxLayout:
+            # --- Username ---
+            TextInput:
+                id: username
+                hint_text: "Tên đăng nhập"
+                multiline: False
                 size_hint_y: None
-                height: dp(50)
-                canvas.before:
-                    Color:
-                        rgba: 0.96, 0.96, 0.96, 1
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [10]
-                TextInput:
-                    id: username
-                    hint_text: "Tên đăng nhập"
-                    background_normal: ""
-                    background_active: ""
-                    background_color: 0, 0, 0, 0
-                    foreground_color: 0.1, 0.1, 0.1, 1
-                    padding: [15, 15, 15, 15]
-                    cursor_color: 0.25, 0.5, 1, 1
-                    font_size: "16sp"
+                height: dp(60)
+                font_size: "18sp"
+                padding: [20, 20, 20, 20]
 
-            # --- Mật khẩu ---
-            BoxLayout:
+            # --- Password ---
+            TextInput:
+                id: password
+                hint_text: "Mật khẩu"
+                password: True
+                multiline: False
                 size_hint_y: None
-                height: dp(50)
-                canvas.before:
-                    Color:
-                        rgba: 0.96, 0.96, 0.96, 1
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [10]
-                TextInput:
-                    id: password
-                    hint_text: "Mật khẩu"
-                    password: True
-                    background_normal: ""
-                    background_active: ""
-                    background_color: 0, 0, 0, 0
-                    foreground_color: 0.1, 0.1, 0.1, 1
-                    padding: [15, 15, 15, 15]
-                    cursor_color: 0.25, 0.5, 1, 1
-                    font_size: "16sp"
+                height: dp(60)
+                font_size: "18sp"
+                padding: [20, 20, 20, 20]
 
-            # --- Lớp ---
-            BoxLayout:
+            # --- Class ---
+            TextInput:
+                id: class_name
+                hint_text: "Lớp"
+                multiline: False
                 size_hint_y: None
-                height: dp(50)
-                canvas.before:
-                    Color:
-                        rgba: 0.96, 0.96, 0.96, 1
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [10]
-                TextInput:
-                    id: class_name
-                    hint_text: "Lớp"
-                    background_normal: ""
-                    background_active: ""
-                    background_color: 0, 0, 0, 0
-                    foreground_color: 0.1, 0.1, 0.1, 1
-                    padding: [15, 15, 15, 15]
-                    cursor_color: 0.25, 0.5, 1, 1
-                    font_size: "16sp"
+                height: dp(60)
+                font_size: "18sp"
+                padding: [20, 20, 20, 20]
 
-            # --- Ngành học ---
-            BoxLayout:
+            # --- Major ---
+            TextInput:
+                id: major
+                hint_text: "Ngành học"
+                multiline: False
                 size_hint_y: None
-                height: dp(50)
-                canvas.before:
-                    Color:
-                        rgba: 0.96, 0.96, 0.96, 1
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [10]
-                TextInput:
-                    id: major
-                    hint_text: "Ngành học"
-                    background_normal: ""
-                    background_active: ""
-                    background_color: 0, 0, 0, 0
-                    foreground_color: 0.1, 0.1, 0.1, 1
-                    padding: [15, 15, 15, 15]
-                    cursor_color: 0.25, 0.5, 1, 1
-                    font_size: "16sp"
+                height: dp(60)
+                font_size: "18sp"
+                padding: [20, 20, 20, 20]
 
-            # --- Nút đăng ký ---
             Button:
                 text: "Đăng ký"
-                font_size: "18sp"
+                font_size: "20sp"
                 bold: True
-                background_normal: ""
-                background_color: 0.23, 0.51, 0.96, 1  # Xanh pastel
+                background_color: 0.2, 0.5, 1, 1
                 color: 1, 1, 1, 1
                 size_hint_y: None
-                height: dp(55)
-                canvas.before:
-                    Color:
-                        rgba: self.background_color
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [12]
-                on_release:
-                    root.do_register(fullname.text, dob.text, address.text, username.text, password.text, class_name.text, major.text)
+                height: dp(60)
+                on_release: root.do_register(fullname.text, dob.text, student_id.text, address.text, username.text, password.text, class_name.text, major.text)
 
-            # --- Nút quay lại ---
             Button:
-                text: "Quay lại"
+                text: "Quay lại chọn loại tài khoản"
                 font_size: "16sp"
-                background_normal: ""
-                background_color: 1, 1, 1, 1
-                color: 0.3, 0.3, 0.3, 1
-                size_hint_y: None
-                height: dp(50)
-                canvas.before:
-                    Color:
-                        rgba: 0.85, 0.85, 0.85, 1
-                    Line:
-                        width: 1.2
-                        rounded_rectangle: [self.x, self.y, self.width, self.height, 12]
+                background_color: 0, 0, 0, 0
+                color: 0.4, 0.4, 0.4, 1
                 on_release: app.root.current = "register"
 
             Label:
                 id: status
                 text: ""
-                color: 0.6, 0.1, 0.1, 1
-                font_size: "14sp"
-                halign: "center"
-                valign: "middle"
-                text_size: self.size
-                size_hint_y: None
-                height: dp(40)
+                color: 0.8, 0.2, 0.2, 1

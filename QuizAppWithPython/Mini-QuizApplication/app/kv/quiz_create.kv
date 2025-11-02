@@ -7,162 +7,91 @@
         orientation: "vertical"
         canvas.before:
             Color:
-                rgba: 1, 1, 1, 1  # nền trắng
+                rgba: 0.95, 0.95, 0.95, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
 
-        # ======= Thanh top bar =======
+        # Top bar
         BoxLayout:
             size_hint_y: None
-            height: dp(60)
-            padding: [dp(20), dp(10)]
-            spacing: dp(15)
-            canvas.before:
-                Color:
-                    rgba: 0.96, 0.96, 0.96, 1  # nền xám nhạt
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
+            height: dp(70)
+            padding: [dp(30), dp(15)]
+            background_color: 0.2, 0.5, 1, 1
 
             Button:
-                text: "← Quay lại"
-                size_hint_x: 0.25
-                font_size: "16sp"
-                background_normal: ""
-                background_color: 1, 1, 1, 1
-                color: 0.25, 0.25, 0.25, 1
-                canvas.before:
-                    Color:
-                        rgba: 0.85, 0.85, 0.85, 1
-                    Line:
-                        width: 1.2
-                        rounded_rectangle: [self.x, self.y, self.width, self.height, 10]
+                text: "< Quay lại"
+                size_hint_x: 0.2
+                font_size: "18sp"
+                background_color: 0, 0, 0, 0
+                color: 1, 1, 1, 1
                 on_release: root.go_back()
 
             Label:
                 id: screen_title
                 text: "Tạo Quiz"
-                font_size: "20sp"
+                font_size: "28sp"
                 bold: True
-                color: 0.15, 0.15, 0.15, 1
-                halign: "center"
-                valign: "middle"
-                text_size: self.size
+                color: 1, 1, 1, 1
 
-            Widget:  # căn giữa 2 bên
-
-        # ======= Khu vực nội dung có thể cuộn =======
+        # Scrollable content
         ScrollView:
-            do_scroll_x: False
-            do_scroll_y: True
-
             GridLayout:
                 cols: 1
                 size_hint_y: None
                 height: self.minimum_height
-                spacing: dp(18)
-                padding: [dp(25), dp(25)]
+                spacing: dp(20)
+                padding: dp(40)
 
-                # --- Tiêu đề ---
-                Label:
-                    text: "Tạo Quiz (nhiều câu hỏi, nhiều đáp án)"
-                    font_size: "22sp"
-                    bold: True
-                    color: 0.1, 0.1, 0.1, 1
-                    halign: "center"
-                    valign: "middle"
-                    text_size: self.size
+                TextInput:
+                    id: quiz_name
+                    hint_text: "Tên Quiz"
                     size_hint_y: None
-                    height: dp(40)
+                    height: dp(60)
+                    font_size: "20sp"
+                    padding: [20, 20, 20, 20]
 
-                # --- Ô nhập Tên Quiz ---
-                BoxLayout:
+                TextInput:
+                    id: quiz_description
+                    hint_text: "Mô tả Quiz (tùy chọn)"
+                    multiline: True
                     size_hint_y: None
-                    height: dp(55)
-                    canvas.before:
-                        Color:
-                            rgba: 0.96, 0.96, 0.96, 1
-                        RoundedRectangle:
-                            pos: self.pos
-                            size: self.size
-                            radius: [10]
-                    TextInput:
-                        id: quiz_name
-                        hint_text: "Tên Quiz"
-                        background_normal: ""
-                        background_active: ""
-                        background_color: 0, 0, 0, 0
-                        foreground_color: 0.1, 0.1, 0.1, 1
-                        font_size: "16sp"
-                        padding: [15, 15, 15, 15]
-                        cursor_color: 0.25, 0.5, 1, 1
+                    height: dp(100)
+                    font_size: "18sp"
+                    padding: [20, 20, 20, 20]
 
-                # --- Ô nhập mô tả Quiz ---
-                BoxLayout:
+                TextInput:
+                    id: quiz_duration
+                    hint_text: "Thời lượng (phút, ví dụ: 30)"
+                    input_filter: 'int'
                     size_hint_y: None
-                    height: dp(90)
-                    canvas.before:
-                        Color:
-                            rgba: 0.96, 0.96, 0.96, 1
-                        RoundedRectangle:
-                            pos: self.pos
-                            size: self.size
-                            radius: [10]
-                    TextInput:
-                        id: quiz_description
-                        hint_text: "Mô tả Quiz (không bắt buộc)"
-                        multiline: True
-                        background_normal: ""
-                        background_active: ""
-                        background_color: 0, 0, 0, 0
-                        foreground_color: 0.1, 0.1, 0.1, 1
-                        font_size: "15sp"
-                        padding: [15, 15, 15, 15]
-                        cursor_color: 0.25, 0.5, 1, 1
+                    height: dp(60)
+                    font_size: "18sp"
+                    padding: [20, 20, 20, 20]
 
-                # --- Khu vực chứa danh sách câu hỏi ---
                 GridLayout:
                     id: question_container
                     cols: 1
                     size_hint_y: None
                     height: self.minimum_height
-                    spacing: dp(20)
+                    spacing: dp(25)
 
-                # --- Nút Thêm câu hỏi ---
                 Button:
-                    text: "➕ Thêm câu hỏi"
-                    font_size: "16sp"
+                    text: "+ Thêm câu hỏi"
+                    font_size: "20sp"
                     bold: True
-                    background_normal: ""
-                    background_color: 0.23, 0.51, 0.96, 1
+                    background_color: 0.2, 0.5, 1, 1
                     color: 1, 1, 1, 1
                     size_hint_y: None
-                    height: dp(55)
-                    canvas.before:
-                        Color:
-                            rgba: self.background_color
-                        RoundedRectangle:
-                            pos: self.pos
-                            size: self.size
-                            radius: [12]
+                    height: dp(60)
                     on_release: root.add_question_block()
 
-                # --- Nút Tạo Quiz ---
                 Button:
-                    text: "✅ Tạo Quiz"
-                    font_size: "16sp"
+                    text: "Lưu Quiz"
+                    font_size: "22sp"
                     bold: True
-                    background_normal: ""
-                    background_color: 0.15, 0.6, 0.3, 1
+                    background_color: 0.1, 0.7, 0.4, 1
                     color: 1, 1, 1, 1
                     size_hint_y: None
-                    height: dp(55)
-                    canvas.before:
-                        Color:
-                            rgba: self.background_color
-                        RoundedRectangle:
-                            pos: self.pos
-                            size: self.size
-                            radius: [12]
+                    height: dp(60)
                     on_release: root.save_quiz()

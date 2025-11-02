@@ -41,6 +41,7 @@ class QuizCreateScreen(Screen):
         self.ids.screen_title.text = "Sửa Quiz"
         self.ids.quiz_name.text = quiz_data.get("title", "")
         self.ids.quiz_description.text = quiz_data.get("description", "")
+        self.ids.quiz_duration.text = str(quiz_data.get("duration", 0))
         self.children[0].children[0].children[0].text = "Cập nhật Quiz"
 
         container = self.ids.question_container
@@ -93,7 +94,48 @@ class QuizCreateScreen(Screen):
 
         container.add_widget(question_box)
 
-    # ===================== CÂU HỎI MỚI =====================
+    def _add_option_field_with_data(self, parent_box, radio_group, option_data, correct_answer):
+        line = BoxLayout(orientation="horizontal", size_hint_y=None, height=45, spacing=10, padding=[5, 0])
+
+        # ToggleButton — chọn đáp án đúng
+        rb = ToggleButton(
+            group=radio_group,
+            text="✓",                # ký hiệu tích ✅
+            font_size=18,
+            size_hint_x=0.12,
+            background_normal="",
+            background_down="",
+            background_color=(0.9, 0.9, 0.9, 1),
+            color=(0.3, 0.3, 0.3, 1),
+            allow_no_selection=False
+        )
+
+        # Cập nhật màu toggle theo trạng thái
+        rb.bind(state=lambda instance, val: self._update_toggle_color(instance, val))
+        self._update_toggle_color(rb, rb.state)
+
+        # Ô nhập văn bản đáp án
+        txt = TextInput(
+            text=option_data.get("text", ""),
+            size_hint_x=0.88,
+            background_normal="",
+            background_active="",
+            background_color=(1, 1, 1, 1),
+            foreground_color=(0.1, 0.1, 0.1, 1),
+            hint_text_color=(0.5, 0.5, 0.5, 1),
+            font_size=16,
+            padding=[10, 8],
+            cursor_color=(0.23, 0.51, 0.96, 1),
+        )
+        self.style_textinput(txt)
+
+        if option_data.get("text") == correct_answer:
+            rb.state = 'down'
+
+        # Gắn 2 widget vào dòng
+        line.add_widget(rb)
+        line.add_widget(txt)
+        parent_box.add_widget(line)
     def add_question_block(self):
         container = self.ids.question_container
         question_box = BoxLayout(orientation="vertical", size_hint_y=None, height=350, spacing=10)
@@ -205,8 +247,16 @@ class QuizCreateScreen(Screen):
     def save_quiz(self):
         quiz_name = self.ids.quiz_name.text.strip()
         quiz_description = self.ids.quiz_description.text.strip()
+        quiz_duration_text = self.ids.quiz_duration.text.strip()
+
         if not quiz_name:
             self._popup("Lỗi", "Vui lòng nhập tên Quiz!")
+            return
+
+        try:
+            quiz_duration = int(quiz_duration_text) if quiz_duration_text else 0
+        except ValueError:
+            self._popup("Lỗi", "Thời lượng phải là một con số.")
             return
 
         container = self.ids.question_container
@@ -251,7 +301,7 @@ class QuizCreateScreen(Screen):
             return
 
         if self.editing_quiz_id:
-            update_quiz(self.editing_quiz_id, quiz_name, quiz_description, questions_data)
+            update_quiz(self.editing_quiz_id, quiz_name, quiz_description, quiz_duration, questions_data)
             self._popup("Thành công", f"Quiz '{quiz_name}' đã được cập nhật!", self.go_to_library)
         else:
             from kivy.app import App
@@ -262,7 +312,7 @@ class QuizCreateScreen(Screen):
                 return
 
             quiz_id = quiz_services.create_quiz(
-                user_id=user_id, title=quiz_name, description=quiz_description
+                user_id=user_id, title=quiz_name, description=quiz_description, duration=quiz_duration
             )
             for q_data in questions_data:
                 quiz_services.add_question(quiz_id, q_data["question_title"], q_data["correct_answer"], q_data["options"])
@@ -278,6 +328,7 @@ class QuizCreateScreen(Screen):
     def clear_inputs(self):
         self.ids.quiz_name.text = ""
         self.ids.quiz_description.text = ""
+        self.ids.quiz_duration.text = ""
         self.ids.question_container.clear_widgets()
         self.add_question_block()
 

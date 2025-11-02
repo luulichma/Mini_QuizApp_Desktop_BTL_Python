@@ -1,0 +1,56 @@
+# app/kv/class_create.kv
+<ClassCreateScreen>:
+    name: 'class_create'
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(40)
+        spacing: dp(25)
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "Tạo lớp học mới"
+            font_size: "32sp"
+            bold: True
+            color: 0.1, 0.1, 0.1, 1
+
+        TextInput:
+            id: class_name_input
+            hint_text: 'Tên lớp'
+            size_hint_y: None
+            height: dp(60)
+            font_size: '20sp'
+            padding: [20, 20, 20, 20]
+
+        TextInput:
+            id: class_description_input
+            hint_text: 'Mô tả lớp (tùy chọn)'
+            multiline: True
+            size_hint_y: None
+            height: dp(120)
+            font_size: '18sp'
+            padding: [20, 20, 20, 20]
+
+        Button:
+            text: 'Tạo lớp'
+            size_hint_y: None
+            height: dp(60)
+            font_size: "22sp"
+            bold: True
+            background_color: 0.2, 0.5, 1, 1
+            color: 1, 1, 1, 1
+            on_release: root.create_class()
+
+        Button:
+            text: 'Quay lại'
+            size_hint_y: None
+            height: dp(60)
+            font_size: "20sp"
+            background_color: 0.8, 0.8, 0.8, 1
+            color: 0.1, 0.1, 0.1, 1
+            on_release: root.go_back()

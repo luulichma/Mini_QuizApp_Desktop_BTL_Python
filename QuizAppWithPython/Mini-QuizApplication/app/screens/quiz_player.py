@@ -5,6 +5,7 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.app import App
 from app.services import quiz_services
+from kivy.clock import Clock
 
 
 class QuizPlayerScreen(Screen):
@@ -12,6 +13,7 @@ class QuizPlayerScreen(Screen):
     quiz_data = DictProperty({})
     student_answers = DictProperty({})
     current_question_index = NumericProperty(0)
+    remaining_time = NumericProperty(0)
 
     def on_enter(self, *args):
         """Called when the screen is entered. Loads the quiz data."""
@@ -22,8 +24,27 @@ class QuizPlayerScreen(Screen):
                 self._show_popup("Lỗi", "Không thể tải hoặc bài quiz này không có câu hỏi.", self.go_back)
                 return
             self.display_current_question()
+            self.start_timer()
         except Exception as e:
             self._show_popup("Lỗi", f"Đã xảy ra lỗi: {e}", self.go_back)
+
+    def start_timer(self):
+        duration = self.quiz_data.get("duration", 0)
+        if duration > 0:
+            self.remaining_time = duration * 60
+            self.timer_event = Clock.schedule_interval(self.update_timer, 1)
+
+    def update_timer(self, dt):
+        self.remaining_time -= 1
+        minutes = int(self.remaining_time / 60)
+        seconds = int(self.remaining_time % 60)
+        self.ids.timer_label.text = f"Thời gian: {minutes:02d}:{seconds:02d}"
+        if self.remaining_time <= 0:
+            self.finish_quiz()
+
+    def on_leave(self, *args):
+        if hasattr(self, 'timer_event'):
+            self.timer_event.cancel()
 
     def display_current_question(self):
         """Updates the UI with the current question and its options."""
@@ -75,6 +96,8 @@ class QuizPlayerScreen(Screen):
             self.finish_quiz()
 
     def finish_quiz(self):
+        if hasattr(self, 'timer_event'):
+            self.timer_event.cancel()
         """Calculates the score, saves the result, and shows a summary."""
         correct_answers = 0
         total_questions = len(self.quiz_data['questions'])
@@ -99,8 +122,11 @@ class QuizPlayerScreen(Screen):
         user_id = app.user.get('_id')
         quiz_services.save_quiz_result(user_id, self.quiz_id, final_score_str)
 
-        # Show result popup and go back
-        self._show_popup("Hoàn thành!", f"Điểm của bạn là: {final_score_str}", self.go_back)
+        # Navigate to result screen
+        result_screen = self.manager.get_screen('result_screen')
+        result_screen.quiz_id = self.quiz_id
+        result_screen.student_answers = self.student_answers
+        self.manager.current = 'result_screen'
 
     def reset_state(self):
         """Resets the screen to its initial state for a new quiz attempt."""

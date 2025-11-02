@@ -1,0 +1,46 @@
+# app/kv/result.kv
+<ResultScreen>:
+    name: 'result_screen'
+    quiz_id: None
+    student_answers: {}
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(40)
+        spacing: dp(25)
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "Kết quả Quiz"
+            font_size: "32sp"
+            bold: True
+            color: 0.1, 0.1, 0.1, 1
+
+        Label:
+            id: score_label
+            text: 'Điểm của bạn: '
+            font_size: '24sp'
+            color: 0.2, 0.5, 1, 1
+
+        ScrollView:
+            BoxLayout:
+                id: results_container
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(15)
+
+        Button:
+            text: 'Quay về Trang chủ'
+            size_hint_y: None
+            height: dp(60)
+            font_size: "20sp"
+            bold: True
+            background_color: 0.2, 0.5, 1, 1
+            color: 1, 1, 1, 1
+            on_release: root.go_back()

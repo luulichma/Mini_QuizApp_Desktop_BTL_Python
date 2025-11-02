@@ -3,101 +3,67 @@
 
     BoxLayout:
         orientation: 'vertical'
-        padding: dp(25)
-        spacing: dp(20)
+        padding: dp(40)
+        spacing: dp(25)
         canvas.before:
             Color:
-                rgba: 1, 1, 1, 1  # nền trắng sáng
+                rgba: 0.95, 0.95, 0.95, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
 
-        # --- Tiêu đề Quiz ---
         Label:
             id: quiz_title
             text: ''
-            font_size: "26sp"
+            font_size: "32sp"
             bold: True
             color: 0.1, 0.1, 0.1, 1
-            halign: "center"
-            valign: "middle"
-            text_size: self.size
-            size_hint_y: None
-            height: dp(50)
 
-        # --- Bộ đếm câu hỏi ---
         Label:
             id: question_counter
             text: ''
-            font_size: "16sp"
+            font_size: "18sp"
             color: 0.4, 0.4, 0.4, 1
-            halign: "center"
-            size_hint_y: None
-            height: dp(25)
 
-        # --- Câu hỏi ---
+        Label:
+            id: timer_label
+            text: ''
+            font_size: "22sp"
+            color: 0.8, 0.2, 0.2, 1
+
         Label:
             id: question_label
             text: 'Đang tải câu hỏi...'
-            font_size: "20sp"
+            font_size: "24sp"
             bold: True
-            color: 0.15, 0.15, 0.15, 1
-            halign: "center"
-            valign: "middle"
-            text_size: self.width - dp(20), None
-            size_hint_y: None
-            height: dp(100)
+            color: 0.1, 0.1, 0.1, 1
 
-        # --- Các lựa chọn ---
         ScrollView:
-            size_hint_y: 0.45
-            do_scroll_x: False
-            do_scroll_y: True
-
+            size_hint_y: 0.5
             BoxLayout:
                 id: options_container
                 orientation: 'vertical'
-                spacing: dp(12)
+                spacing: dp(15)
                 size_hint_y: None
                 height: self.minimum_height
-                padding: [0, dp(10)]
 
-        # --- Thanh nút điều hướng ---
         BoxLayout:
             size_hint_y: None
-            height: dp(60)
-            spacing: dp(20)
+            height: dp(70)
+            spacing: dp(25)
 
-            # Nút quay lại
             Button:
                 text: 'Quay lại'
-                font_size: "16sp"
-                bold: True
-                background_normal: ''
-                background_color: 1, 1, 1, 1
-                color: 0.3, 0.3, 0.3, 1
-                canvas.before:
-                    Color:
-                        rgba: 0.85, 0.85, 0.85, 1
-                    Line:
-                        width: 1.2
-                        rounded_rectangle: [self.x, self.y, self.width, self.height, 12]
+                font_size: "20sp"
+                background_color: 0.8, 0.8, 0.8, 1
+                color: 0.1, 0.1, 0.1, 1
                 on_release: root.go_back()
 
-            # Nút câu tiếp theo
             Button:
                 id: next_button
-                text: 'Câu tiếp theo'
-                font_size: "16sp"
+                text: 'Tiếp theo'
+                font_size: "20sp"
                 bold: True
-                background_normal: ''
-                background_color: 0.23, 0.51, 0.96, 1  # xanh pastel
+                background_color: 0.2, 0.5, 1, 1
                 color: 1, 1, 1, 1
-                canvas.before:
-                    Color:
-                        rgba: self.background_color
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [12]
                 on_release: root.next_question()

@@ -39,7 +39,7 @@ class StudentHomeScreen(Screen):
         history_list_layout.clear_widgets()
 
         if not self.current_user:
-            history_list_layout.add_widget(Label(text="Vui lòng đăng nhập lại", color=(1, 1, 1, 0.9), font_size=18))
+            history_list_layout.add_widget(Label(text="Vui lòng đăng nhập lại", color=(0, 0, 0, 0.9), font_size=18))
             return
 
         try:
@@ -47,7 +47,7 @@ class StudentHomeScreen(Screen):
             results = get_results_by_user(user_id)
 
             if not results:
-                history_list_layout.add_widget(Label(text="(Chưa có lịch sử làm bài)", color=(1, 1, 1, 0.9), font_size=18))
+                history_list_layout.add_widget(Label(text="(Chưa có lịch sử làm bài)", color=(0, 0, 0, 0.9), font_size=18))
                 return
 
             for result in results:
@@ -56,7 +56,7 @@ class StudentHomeScreen(Screen):
                 item.ids.history_quiz_score.text = f"Điểm: {result['score']}"
                 history_list_layout.add_widget(item)
         except Exception as e:
-            history_list_layout.add_widget(Label(text=f"Lỗi tải lịch sử: {e}", color=(1, 0.5, 0.5, 1)))
+            history_list_layout.add_widget(Label(text=f"Lỗi tải lịch sử: {e}", color=(1, 0, 0, 1)))
 
     def go_to_change_password(self):
         self.manager.current = "change_password"

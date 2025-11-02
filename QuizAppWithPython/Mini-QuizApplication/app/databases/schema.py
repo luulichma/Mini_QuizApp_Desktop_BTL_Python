@@ -13,11 +13,12 @@ def user_schema(name, email, username, password, role="player", average_score=0.
     }
 
 # ===== QUIZZES =====
-def quiz_schema(user_id, title, description):
+def quiz_schema(user_id, title, description, duration=0):
     return {
         "user_id": ObjectId(user_id),
         "title": title,
         "description": description,
+        "duration": duration,
         "created_at": datetime.utcnow()
     }
 
@@ -44,4 +45,21 @@ def result_schema(user_id, quiz_id, score):
         "quiz_id": ObjectId(quiz_id),
         "score": score,
         "submitted_at": datetime.utcnow()
+    }
+
+# ===== CLASSES =====
+def class_schema(teacher_id, class_name, description):
+    return {
+        "teacher_id": ObjectId(teacher_id),
+        "class_name": class_name,
+        "description": description,
+        "created_at": datetime.utcnow()
+    }
+
+# ===== CLASS_STUDENTS =====
+def class_student_schema(class_id, student_id):
+    return {
+        "class_id": ObjectId(class_id),
+        "student_id": ObjectId(student_id),
+        "enrolled_at": datetime.utcnow()
     }

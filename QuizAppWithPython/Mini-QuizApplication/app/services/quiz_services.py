@@ -3,8 +3,8 @@ from app.databases.schema import quiz_schema, question_schema, option_schema, re
 from typing import List, Dict, Any, Optional
 from bson import ObjectId
 
-def create_quiz(user_id: str, title: str, description: str) -> str:
-	doc = quiz_schema(user_id, title, description)
+def create_quiz(user_id: str, title: str, description: str, duration: int) -> str:
+	doc = quiz_schema(user_id, title, description, duration)
 	res = QUIZZES.insert_one(doc)
 	return str(res.inserted_id)
 
@@ -90,11 +90,11 @@ def get_quiz_details(quiz_id: str) -> Optional[Dict[str, Any]]:
     quiz['questions'] = questions
     return quiz
 
-def update_quiz(quiz_id: str, title: str, description: str, questions_data: List[Dict[str, Any]]) -> None:
+def update_quiz(quiz_id: str, title: str, description: str, duration: int, questions_data: List[Dict[str, Any]]) -> None:
     q_id = ObjectId(quiz_id)
     QUIZZES.update_one(
         {"_id": q_id},
-        {"$set": {"title": title, "description": description}}
+        {"$set": {"title": title, "description": description, "duration": duration}}
     )
     old_questions_cursor = QUESTIONS.find({"quiz_id": q_id}, {"_id": 1})
     old_question_ids = [q["_id"] for q in old_questions_cursor]

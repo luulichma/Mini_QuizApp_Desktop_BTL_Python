@@ -72,4 +72,8 @@ def change_password(user_id: str, old_password: str, new_password: str):
     new_hashed_password = hash_password(new_password)
     USERS.update_one({"_id": uid}, {"$set": {"password": new_hashed_password}})
 
-    return True, "Password updated successfully"
+def get_user_by_username(username: str) -> Optional[Dict[str, Any]]:
+    return USERS.find_one({"username": username})
+
+def get_user_by_student_id(student_id: str) -> Optional[Dict[str, Any]]:
+    return USERS.find_one({"id": student_id})
