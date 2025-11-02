@@ -1,3 +1,5 @@
+#:import dp kivy.metrics.dp
+
 <QuizCreateScreen>:
     name: "quiz_create"
 
@@ -5,12 +7,12 @@
         orientation: "vertical"
         canvas.before:
             Color:
-                rgba: 1, 1, 1, 1  # nền trắng tinh
+                rgba: 1, 1, 1, 1  # nền trắng
             Rectangle:
                 pos: self.pos
                 size: self.size
 
-        # --- Thanh top bar ---
+        # ======= Thanh top bar =======
         BoxLayout:
             size_hint_y: None
             height: dp(60)
@@ -18,7 +20,7 @@
             spacing: dp(15)
             canvas.before:
                 Color:
-                    rgba: 0.96, 0.96, 0.96, 1
+                    rgba: 0.96, 0.96, 0.96, 1  # nền xám nhạt
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -29,7 +31,7 @@
                 font_size: "16sp"
                 background_normal: ""
                 background_color: 1, 1, 1, 1
-                color: 0.3, 0.3, 0.3, 1
+                color: 0.25, 0.25, 0.25, 1
                 canvas.before:
                     Color:
                         rgba: 0.85, 0.85, 0.85, 1
@@ -44,15 +46,16 @@
                 font_size: "20sp"
                 bold: True
                 color: 0.15, 0.15, 0.15, 1
-                halign: "left"
+                halign: "center"
                 valign: "middle"
                 text_size: self.size
 
-            Widget:  # để căn đều 2 bên
+            Widget:  # căn giữa 2 bên
 
-        # --- Nội dung chính ---
+        # ======= Khu vực nội dung có thể cuộn =======
         ScrollView:
             do_scroll_x: False
+            do_scroll_y: True
 
             GridLayout:
                 cols: 1
@@ -61,6 +64,7 @@
                 spacing: dp(18)
                 padding: [dp(25), dp(25)]
 
+                # --- Tiêu đề ---
                 Label:
                     text: "Tạo Quiz (nhiều câu hỏi, nhiều đáp án)"
                     font_size: "22sp"
@@ -72,7 +76,7 @@
                     size_hint_y: None
                     height: dp(40)
 
-                # --- Tên Quiz ---
+                # --- Ô nhập Tên Quiz ---
                 BoxLayout:
                     size_hint_y: None
                     height: dp(55)
@@ -94,7 +98,7 @@
                         padding: [15, 15, 15, 15]
                         cursor_color: 0.25, 0.5, 1, 1
 
-                # --- Mô tả Quiz ---
+                # --- Ô nhập mô tả Quiz ---
                 BoxLayout:
                     size_hint_y: None
                     height: dp(90)
@@ -117,7 +121,7 @@
                         padding: [15, 15, 15, 15]
                         cursor_color: 0.25, 0.5, 1, 1
 
-                # --- Danh sách câu hỏi ---
+                # --- Khu vực chứa danh sách câu hỏi ---
                 GridLayout:
                     id: question_container
                     cols: 1
@@ -125,9 +129,9 @@
                     height: self.minimum_height
                     spacing: dp(20)
 
-                # --- Nút thêm câu hỏi ---
+                # --- Nút Thêm câu hỏi ---
                 Button:
-                    text: "Thêm câu hỏi"
+                    text: "➕ Thêm câu hỏi"
                     font_size: "16sp"
                     bold: True
                     background_normal: ""
@@ -144,6 +148,21 @@
                             radius: [12]
                     on_release: root.add_question_block()
 
-                # --- Nút tạo quiz ---
+                # --- Nút Tạo Quiz ---
                 Button:
-                    text: "Tạo Quiz"
+                    text: "✅ Tạo Quiz"
+                    font_size: "16sp"
+                    bold: True
+                    background_normal: ""
+                    background_color: 0.15, 0.6, 0.3, 1
+                    color: 1, 1, 1, 1
+                    size_hint_y: None
+                    height: dp(55)
+                    canvas.before:
+                        Color:
+                            rgba: self.background_color
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [12]
+                    on_release: root.save_quiz()

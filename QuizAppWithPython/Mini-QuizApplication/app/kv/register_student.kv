@@ -72,6 +72,28 @@
                     cursor_color: 0.25, 0.5, 1, 1
                     font_size: "16sp"
 
+            # --- ID ---
+            BoxLayout:
+                size_hint_y: None
+                height: dp(50)
+                canvas.before:
+                    Color:
+                        rgba: 0.96, 0.96, 0.96, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10]
+                TextInput:
+                    id: dob
+                    hint_text: "Mã sinh viên"
+                    background_normal: ""
+                    background_active: ""
+                    background_color: 0, 0, 0, 0
+                    foreground_color: 0.1, 0.1, 0.1, 1
+                    padding: [15, 15, 15, 15]
+                    cursor_color: 0.25, 0.5, 1, 1
+                    font_size: "16sp"
+
             # --- Địa chỉ ---
             BoxLayout:
                 size_hint_y: None

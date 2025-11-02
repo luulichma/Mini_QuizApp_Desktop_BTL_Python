@@ -3,10 +3,11 @@ from app.services.auth_services import register_user
 
 
 class RegisterStudentScreen(Screen):
-    def do_register(self, fullname, dob, address, username, password, class_name, major):
+    def do_register(self, fullname, dob, id, address, username, password, class_name, major):
         profile = {
             "fullname": fullname,
             "dob": dob,
+            "id": id,
             "address": address,
             "class": class_name,
             "major": major,
