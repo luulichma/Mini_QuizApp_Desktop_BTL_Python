@@ -38,19 +38,29 @@ def get_class_details(class_id: str) -> Optional[Dict[str, Any]]:
     class_data["_id"] = str(class_data["_id"])
     return class_data
 
-def add_student_to_class(class_id: str, student_id: str) -> bool:
-    student = USERS.find_one({"_id": ObjectId(student_id), "role": "player"})
+def add_student_to_class(class_id: str, student_id: str) -> (bool, str):
+    try:
+        cid = ObjectId(class_id)
+    except Exception:
+        return False, "ID lớp học không hợp lệ."
+
+    # Check if class exists
+    target_class = CLASSES.find_one({"_id": cid})
+    if not target_class:
+        return False, "Không tìm thấy lớp học với ID này."
+
+    student = USERS.find_one({"_id": ObjectId(student_id)})
     if not student:
-        return False
+        return False, "Không tìm thấy thông tin sinh viên."
     
     # Check if student is already in class
-    existing_entry = CLASS_STUDENTS.find_one({"class_id": ObjectId(class_id), "student_id": student["_id"]})
+    existing_entry = CLASS_STUDENTS.find_one({"class_id": cid, "student_id": student["_id"]})
     if existing_entry:
-        return False # Student already in class
+        return False, "Bạn đã ở trong lớp học này."
 
     doc = class_student_schema(class_id, str(student["_id"]))
     CLASS_STUDENTS.insert_one(doc)
-    return True
+    return True, "Tham gia lớp học thành công!"
 
 def list_students_in_class(class_id: str) -> List[Dict[str, Any]]:
     try:
@@ -85,6 +95,34 @@ def list_students_in_class(class_id: str) -> List[Dict[str, Any]]:
         }
         for s in cursor
     ]
+
+def list_classes_by_student(student_id: str) -> List[Dict[str, Any]]:
+    try:
+        sid = ObjectId(student_id)
+    except Exception:
+        return []
+
+    pipeline = [
+        {'$match': {'student_id': sid}},
+        {'$lookup': {
+            'from': 'classes',
+            'localField': 'class_id',
+            'foreignField': '_id',
+            'as': 'class_info'
+        }},
+        {'$unwind': '$class_info'},
+        {'$replaceRoot': {'newRoot': '$class_info'}},
+        {'$project': {
+            '_id': {'$toString': '$_id'},
+            'teacher_id': {'$toString': '$teacher_id'},
+            'class_name': 1,
+            'description': 1,
+            'created_at': 1
+        }}
+    ]
+
+    cursor = CLASS_STUDENTS.aggregate(pipeline)
+    return list(cursor)
 
 def remove_student_from_class(class_id: str, student_id: str) -> bool:
     result = CLASS_STUDENTS.delete_one({"class_id": ObjectId(class_id), "student_id": ObjectId(student_id)})

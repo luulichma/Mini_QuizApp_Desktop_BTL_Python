@@ -1,8 +1,12 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
 from kivy.core.window import Window
 Window.maximize()
 
 from kivy.lang import Builder
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager
 
 # Import các screen
@@ -21,7 +25,7 @@ from app.screens.result import ResultScreen
 from app.screens.class_create import ClassCreateScreen
 from app.screens.class_details import ClassDetailsScreen
 
-class QuizApp(App):
+class QuizApp(MDApp):
     def build(self):
         # Load tất cả file KV
         Builder.load_file("app/kv/login.kv")

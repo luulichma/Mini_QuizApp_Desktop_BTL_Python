@@ -1,26 +1,28 @@
 #:kivy 2.1.0
 #:import Factory kivy.factory.Factory
 
-<HistoryListItem@BoxLayout>:
+
+
+<MyClassListItem@BoxLayout>:
     size_hint_y: None
     height: dp(80)
     padding: [20, 15]
     spacing: 20
     background_color: 1, 1, 1, 1
 
-    Label:
-        id: history_quiz_title
-        text: "Quiz Title"
-        font_size: "18sp"
-        color: 0.1, 0.1, 0.1, 1
-
-    Label:
-        id: history_quiz_score
-        text: "Score: 0/0"
-        size_hint_x: 0.3
-        font_size: "18sp"
-        bold: True
-        color: 0.2, 0.5, 1, 1
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            id: my_class_name
+            text: "Class Name"
+            font_size: "18sp"
+            bold: True
+            color: 0.1, 0.1, 0.1, 1
+        Label:
+            id: my_class_description
+            text: "Class Description"
+            font_size: "14sp"
+            color: 0.4, 0.4, 0.4, 1
 
 <StudentHomeScreen>:
     name: "student_home"
@@ -66,35 +68,61 @@
             # --- Take Quiz Tab ---
             TabbedPanelItem:
                 id: home_tab_item
-                text: "Làm Quiz"
+                text: "Trang chủ"
                 BoxLayout:
                     orientation: "vertical"
                     padding: dp(50)
                     spacing: dp(25)
 
                     Label:
-                        text: "Nhập ID Quiz để bắt đầu"
+                        text: "Nhập ID Quiz hoặc Lớp học"
                         font_size: "24sp"
                         color: 0.1, 0.1, 0.1, 1
 
                     TextInput:
-                        id: quiz_id_input
-                        hint_text: "ID Quiz"
+                        id: id_input
+                        hint_text: "ID"
                         font_size: "20sp"
                         multiline: False
                         size_hint_y: None
                         height: dp(60)
                         padding: [20, 20, 20, 20]
 
-                    Button:
-                        text: "Bắt đầu"
+                    BoxLayout:
                         size_hint_y: None
                         height: dp(60)
-                        font_size: "22sp"
-                        bold: True
-                        background_color: 0.2, 0.5, 1, 1
-                        color: 1, 1, 1, 1
-                        on_release: root.start_quiz_by_id()
+                        spacing: dp(20)
+                        Button:
+                            text: "Bắt đầu Quiz"
+                            size_hint_y: None
+                            height: dp(60)
+                            font_size: "22sp"
+                            bold: True
+                            background_color: 0.2, 0.5, 1, 1
+                            color: 1, 1, 1, 1
+                            on_release: root.start_quiz_by_id()
+                        Button:
+                            text: "Tham gia Lớp"
+                            size_hint_y: None
+                            height: dp(60)
+                            font_size: "22sp"
+                            bold: True
+                            background_color: 0.1, 0.7, 0.3, 1 # Green color
+                            color: 1, 1, 1, 1
+                            on_release: root.join_class()
+
+            # --- My Classes Tab ---
+            TabbedPanelItem:
+                text: "Lớp học của tôi"
+                on_release: root.load_my_classes()
+                ScrollView:
+                    BoxLayout:
+                        id: my_classes_list
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        height: self.minimum_height
+                        spacing: dp(15)
+                        padding: [dp(20), dp(20)]
 
             # --- History Tab ---
             TabbedPanelItem:

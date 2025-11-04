@@ -26,6 +26,20 @@
             font_size: '18sp'
             color: 0.4, 0.4, 0.4, 1
 
+        Label:
+            id: class_id_label
+            text: 'ID: '
+            font_size: '14sp'
+            color: 0.5, 0.5, 0.5, 1
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        Button:
+            text: 'Copy ID'
+            size_hint_y: None
+            height: dp(50)
+            on_release: root.copy_class_id()
+
         BoxLayout:
             size_hint_y: None
             height: dp(60)
