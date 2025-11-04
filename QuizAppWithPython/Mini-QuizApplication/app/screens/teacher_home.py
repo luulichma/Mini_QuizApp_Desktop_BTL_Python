@@ -7,6 +7,8 @@ from kivy.uix.button import Button
 from functools import partial
 from kivy.factory import Factory
 from kivy.core.clipboard import Clipboard
+from kivymd.uix.datatables import MDDataTable
+from kivy.metrics import dp
 from app.services.quiz_services import list_quizzes_by_user, delete_quiz
 from app.services import class_services
 
@@ -30,9 +32,9 @@ class TeacherHomeScreen(Screen):
     # 🔹 Load danh sách Quiz
     # =========================
     def load_quiz_library(self):
-        """Hiển thị danh sách quiz đã tạo với các nút chức năng và giao diện thẻ."""
-        quiz_list = self.ids.quiz_list
-        quiz_list.clear_widgets()
+        """Hiển thị danh sách quiz đã tạo với MDDataTable."""
+        quiz_list_layout = self.ids.quiz_list
+        quiz_list_layout.clear_widgets()
 
         try:
             user_id = self.current_user.get("_id")
@@ -41,68 +43,53 @@ class TeacherHomeScreen(Screen):
 
             quizzes = list_quizzes_by_user(user_id)
             if not quizzes:
-                quiz_list.add_widget(Label(text="(Chưa có quiz nào được tạo)", color=(0, 0, 0, 0.9), font_size=18))
+                quiz_list_layout.add_widget(Label(text="(Chưa có quiz nào được tạo)", color=(0, 0, 0, 0.9), font_size=18))
                 return
 
-            for q in quizzes:
-                item_layout = Factory.QuizListItem()
+            column_data = [
+                ("ID Quiz", dp(80)),
+                ("Tên Quiz", dp(60)),
+                ("Mô tả", dp(100)),
+                ("Sửa", dp(25)),
+                ("Copy ID", dp(25)),
+                ("Xóa", dp(25)),
+            ]
 
-                info_layout = BoxLayout(orientation='vertical', size_hint_x=0.7)
-                info_layout.add_widget(
-                    Label(
-                        text=q['title'], font_size=18, bold=True, halign='left',valign='middle',
-                        text_size=(self.width * 0.5, None), color=(0, 0, 0, 1)
-                    )
-                )
-                info_layout.add_widget(
-                    Label(
-                        text=q.get('description', 'Không có mô tả'), font_size=14,
-                        halign='left', valign='middle', text_size=(self.width * 0.5, None),
-                        color=(0, 0, 0, 0.8)
-                    )
-                )
-                info_layout.add_widget(
-                    Label(
-                        text=f"ID: {q['_id']}", font_size=12,
-                        halign='left', valign='middle', text_size=(self.width * 0.5, None),
-                        color=(0, 0, 0, 0.7)
-                    )
-                )
+            row_data = [
+                (
+                    q['_id'], 
+                    q['title'], 
+                    q.get('description', 'Không có mô tả'),
+                    "Sửa",
+                    "Copy ID",
+                    "Xóa"
+                ) for q in quizzes
+            ]
 
-                button_layout = BoxLayout(size_hint_x=0.3, spacing=5, orientation='horizontal')
-                edit_btn = Button(
-                    text="Sửa",
-                    background_color=(0, 0, 0, 0),
-                    color=(0.6, 0.8, 1, 1),
-                    bold=True
-                )
-                copy_btn = Button(
-                    text="Copy ID",
-                    background_color=(0, 0, 0, 0),
-                    color=(0.7, 1, 0.7, 1), # Greenish color
-                    bold=True
-                )
-                delete_btn = Button(
-                    text="Xóa",
-                    background_color=(0, 0, 0, 0),
-                    color=(1, 0.5, 0.5, 1),
-                    bold=True
-                )
-                
-                edit_btn.bind(on_release=partial(self.edit_quiz, q['_id']))
-                copy_btn.bind(on_release=partial(self.copy_quiz_id, q['_id']))
-                delete_btn.bind(on_release=partial(self.prompt_delete_quiz, q['_id']))
-
-                button_layout.add_widget(edit_btn)
-                button_layout.add_widget(copy_btn)
-                button_layout.add_widget(delete_btn)
-
-                item_layout.add_widget(info_layout)
-                item_layout.add_widget(button_layout)
-                quiz_list.add_widget(item_layout)
+            data_table = MDDataTable(
+                size_hint=(1, None),
+                use_pagination=True,
+                check=False,
+                column_data=column_data,
+                row_data=row_data,
+            )
+            data_table.height = dp(500)
+            quiz_list_layout.add_widget(data_table)
 
         except Exception as e:
-            quiz_list.add_widget(Label(text=f"Lỗi tải quiz: {e}", color=(1, 0, 0, 1), font_size=16))
+            quiz_list_layout.add_widget(Label(text=f"Lỗi tải quiz: {e}", color=(1, 0, 0, 1), font_size=16))
+
+    def on_quiz_row_press(self, instance_table, instance_row):
+        """Handles actions when a row in the quiz table is pressed."""
+        quiz_id = instance_row.table.row_data[instance_row.index][0]
+        column_name = instance_table.column_data[instance_row.column_index][0]
+
+        if column_name == "Sửa":
+            self.edit_quiz(quiz_id)
+        elif column_name == "Copy ID" or column_name == "ID Quiz":
+            self.copy_quiz_id(quiz_id)
+        elif column_name == "Xóa":
+            self.prompt_delete_quiz(quiz_id)
 
     def copy_quiz_id(self, quiz_id, *args):
         """Copies the quiz ID to the clipboard and shows a confirmation popup."""
@@ -170,14 +157,49 @@ class TeacherHomeScreen(Screen):
                 class_list_layout.add_widget(Label(text="(Chưa có lớp học nào)", color=(0, 0, 0, 0.9), font_size=18))
                 return
 
+            # Prepare data for MDDataTable
+            column_data = [
+                ("ID Lớp học", dp(100)),
+                ("Tên lớp", dp(80)),
+                ("Mô tả", dp(120)),
+                ("Ngày tạo", dp(60)),
+                ("Thao tác", dp(30))
+            ]
+            row_data = []
             for cls in classes:
-                item = Factory.ClassListItem()
-                item.ids.class_name.text = cls['class_name']
-                item.ids.class_description.text = cls.get('description', 'Không có mô tả')
-                item.ids.details_button.bind(on_release=partial(self.go_to_class_details, cls['_id']))
-                class_list_layout.add_widget(item)
+                # Format created_at for display
+                created_at_str = cls['created_at'].strftime("%d/%m/%Y") if cls.get('created_at') else "N/A"
+                row_data.append(
+                    (
+                        cls['_id'],
+                        cls['class_name'],
+                        cls.get('description', 'Không có mô tả'),
+                        created_at_str,
+                        "Chi tiết" # Action for details
+                    )
+                )
+            
+            # Create MDDataTable
+            data_table = MDDataTable(
+                size_hint=(1, None),
+                use_pagination=True,
+                check=False,
+                column_data=column_data,
+                row_data=row_data,
+            )
+            data_table.height = (len(row_data) + 1) * dp(48)
+            # Bind on_row_press to handle "Chi tiết" button click
+            data_table.bind(on_row_press=self.on_class_row_press)
+            
+            class_list_layout.add_widget(data_table)
+
         except Exception as e:
             class_list_layout.add_widget(Label(text=f"Lỗi tải lớp học: {e}", color=(1, 0, 0, 1)))
+
+    def on_class_row_press(self, instance_table, instance_row):
+        """Handles row press event for the class data table."""
+        class_id = instance_row.table.row_data[instance_row.index][0]
+        self.go_to_class_details(class_id)
 
     def go_to_class_details(self, class_id, *args):
         details_screen = self.manager.get_screen('class_details')

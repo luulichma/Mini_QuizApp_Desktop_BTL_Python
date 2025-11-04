@@ -115,11 +115,16 @@
                 on_release: root.do_register(fullname.text, dob.text, student_id.text, address.text, username.text, password.text, class_name.text, major.text)
 
             Button:
-                text: "Quay lại chọn loại tài khoản"
-                font_size: "16sp"
-                background_color: 0, 0, 0, 0
-                color: 0.4, 0.4, 0.4, 1
-                on_release: app.root.current = "register"
+                text: "Quay lại"
+                font_size: "20sp"
+                bold: True
+                background_color: 0.6, 0, 0, 1
+                color: 1, 1, 1, 1
+                size_hint_y: None
+                height: dp(60)
+                on_release:
+                    app.root.transition.direction = "right"
+                    app.root.current = "login"
 
             Label:
                 id: status

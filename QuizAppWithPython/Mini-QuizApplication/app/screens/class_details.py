@@ -3,6 +3,7 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.app import App
+from kivy.core.clipboard import Clipboard
 from app.services import class_services
 from app.services import auth_services
 
@@ -20,9 +21,14 @@ class ClassDetailsScreen(Screen):
         if class_data:
             self.ids.class_name_label.text = f"Lớp: {class_data['class_name']}"
             self.ids.class_description_label.text = f"Mô tả: {class_data.get('description', 'Không có')}"
+            self.ids.class_id_label.text = f"ID: {self.class_id}"
             self.load_students_in_class()
         else:
             self._show_popup("Lỗi", "Không tìm thấy thông tin lớp học.", self.go_back)
+
+    def copy_class_id(self):
+        Clipboard.copy(self.class_id)
+        self._show_popup("Thành công", "Đã sao chép ID lớp học vào clipboard.")
 
     def load_students_in_class(self):
         students_container = self.ids.students_container
@@ -92,10 +98,13 @@ class ClassDetailsScreen(Screen):
         popup.open()
 
     def go_to_class_list(self, *args):
-        self.manager.current = 'class_list'
+        teacher_screen = self.manager.get_screen('teacher_home')
+        # The 'Lớp học' tab is the 3rd tab, index 2
+        teacher_screen.ids.content_tabs.switch_to(teacher_screen.ids.content_tabs.tab_list[2])
+        self.manager.current = 'teacher_home'
 
     def go_back(self, *args):
-        self.manager.current = 'class_list'
+        self.manager.current = 'teacher_home'
 
     def _show_popup(self, title, message, on_dismiss_callback=None):
         popup = Popup(title=title, content=Label(text=message, font_size=16), size_hint=(0.6, 0.35))
