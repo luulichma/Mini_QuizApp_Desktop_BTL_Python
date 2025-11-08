@@ -1,50 +1,123 @@
 <RegisterScreen>:
     canvas.before:
         Color:
-            rgba: 0.95, 0.95, 0.95, 1  # Light gray background
+            rgba: 1, 1, 1, 1
         Rectangle:
             pos: self.pos
             size: self.size
 
-    BoxLayout:
-        orientation: "vertical"
-        padding: dp(40)
-        spacing: dp(25)
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 0.9, 0.95, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
-        Label:
-            text: "Tạo tài khoản"
-            font_size: "32sp"
-            bold: True
-            color: 0.1, 0.1, 0.1, 1
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: 0.9, 0.6
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            spacing: dp(25)
+            padding: dp(35)
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [25]
+                Color:
+                    rgba: 0, 0, 0, 0.05
+                Line:
+                    width: 1.2
+                    rounded_rectangle: [self.x, self.y, self.width, self.height, 25]
 
-        Label:
-            text: "Chọn loại tài khoản của bạn"
-            font_size: "18sp"
-            color: 0.4, 0.4, 0.4, 1
+            # Tiêu đề chính
+            Label:
+                text: "Tạo tài khoản"
+                font_size: "30sp"
+                bold: True
+                color: 0.15, 0.15, 0.2, 1
+                size_hint_y: None
+                height: dp(40)
+                halign: "center"
 
-        Button:
-            text: "Giảng viên"
-            font_size: "20sp"
-            bold: True
-            background_color: 0.2, 0.5, 1, 1
-            color: 1, 1, 1, 1
-            size_hint_y: None
-            height: dp(60)
-            on_release: app.root.current = "register_teacher"
+            Label:
+                text: "Chọn loại tài khoản của bạn"
+                font_size: "18sp"
+                color: 0.4, 0.4, 0.4, 1
+                size_hint_y: None
+                height: dp(25)
+                halign: "center"
 
-        Button:
-            text: "Học sinh"
-            font_size: "20sp"
-            bold: True
-            background_color: 0.9, 0.9, 0.9, 1
-            color: 0.1, 0.1, 0.1, 1
-            size_hint_y: None
-            height: dp(60)
-            on_release: app.root.current = "register_student"
+            # --- Nút Giảng viên (viên thuốc) ---
+            Button:
+                text: "Giảng viên"
+                font_size: "18sp"
+                bold: True
+                background_normal: ""
+                background_down: ""
+                background_color: 0, 0, 0, 0   # ẩn nền default
+                color: 1, 1, 1, 1
+                size_hint: (0.75, None)        # cùng chiều ngang với ô input
+                height: dp(45)
+                pos_hint: {"center_x": 0.5}
+                on_release: app.root.current = "register_teacher"
 
-        Button:
-            text: "Quay lại Đăng nhập"
-            font_size: "16sp"
-            background_color: 0, 0, 0, 0
-            color: 0.4, 0.4, 0.4, 1
-            on_release: app.root.current = "login"
+                canvas.before:
+                    # bóng nhẹ dưới nút
+                    Color:
+                        rgba: 0, 0, 0, 0.12
+                    RoundedRectangle:
+                        pos: self.x, self.y - dp(2)
+                        size: self.width, self.height
+                        radius: [self.height / 2]
+                    # nền nút (màu xanh)
+                    Color:
+                        rgba: 0.25, 0.55, 0.95, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [self.height / 2]
+
+            # --- Nút Học sinh (viên thuốc) ---
+            Button:
+                text: "Học sinh"
+                font_size: "18sp"
+                bold: True
+                background_normal: ""
+                background_down: ""
+                background_color: 0, 0, 0, 0
+                color: 1, 1, 1, 1
+                size_hint: (0.75, None)
+                height: dp(45)
+                pos_hint: {"center_x": 0.5}
+                on_release: app.root.current = "register_student"
+
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.12
+                    RoundedRectangle:
+                        pos: self.x, self.y - dp(2)
+                        size: self.width, self.height
+                        radius: [self.height / 2]
+                    Color:
+                        rgba: 0.25, 0.55, 0.95, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [self.height / 2]
+
+            # --- Nút quay lại ---
+            Button:
+                text: "Quay lại [b][color=#1976D2]Đăng nhập[/color][/b]"
+                markup: True
+                font_size: "15sp"
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                color: 0.4, 0.4, 0.4, 1
+                size_hint_y: None
+                height: dp(45)
+                pos_hint: {"center_x": 0.5}
+                on_release: app.root.current = "login"

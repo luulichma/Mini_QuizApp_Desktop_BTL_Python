@@ -3,67 +3,168 @@
 
     BoxLayout:
         orientation: 'vertical'
-        padding: dp(40)
+        padding: [dp(40), dp(30)]
         spacing: dp(25)
         canvas.before:
             Color:
-                rgba: 0.95, 0.95, 0.95, 1
+                rgba: 0.93, 0.96, 1, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
+    
+        # Top bar
+        BoxLayout:
+            size_hint_y: None
+            height: dp(65)
+            padding: [dp(25), dp(10)]
+            spacing: dp(15)
+            canvas.before:
+                Color:
+                    rgba: 0.25, 0.55, 0.95, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
-        Label:
-            id: quiz_title
-            text: ''
-            font_size: "32sp"
-            bold: True
-            color: 0.1, 0.1, 0.1, 1
+            Label:
+                text: "Quiz App"
+                font_size: "24sp"
+                bold: True
+                color: 1, 1, 1, 1
+                halign: "left"
+                valign: "middle"
 
+        # Thanh tieu de va thoi gian
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(15)
+
+            Label:
+                id: quiz_title
+                text: ''
+                font_size: "42sp"
+                bold: True
+                color: 0.1, 0.1, 0.1, 1
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+            Widget:
+                size_hint_x: 1
+
+            Label:
+                id: timer_label
+                text: ''
+                font_size: "22sp"
+                bold: True
+                color: 1, 0, 0, 1
+                size_hint_x: None
+                width: dp(160)
+                halign: "center"
+                valign: "middle"
+                text_size: self.size
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(15)]
+
+                    Color:
+                        rgba: 1, 0, 0, 1
+                    Line:
+                        width: 1.5
+                        rounded_rectangle: (self.x, self.y, self.width, self.height, dp(15))
+        
         Label:
             id: question_counter
             text: ''
             font_size: "18sp"
             color: 0.4, 0.4, 0.4, 1
-
-        Label:
-            id: timer_label
-            text: ''
-            font_size: "22sp"
-            color: 0.8, 0.2, 0.2, 1
-
+            halign: "left"
+            size_hint_y: None
+            height: dp (30)
+            text_size: self.size
+        
+        # Dem cau hoi
         Label:
             id: question_label
             text: 'Đang tải câu hỏi...'
-            font_size: "24sp"
+            font_size: "32sp"
             bold: True
             color: 0.1, 0.1, 0.1, 1
-
+            text_size: self.width - dp(40), None
+            size_hint_y: None
+            height: self.texture_size[1] + dp(10)
+            
+        # Dap an    
         ScrollView:
             size_hint_y: 0.5
+            do_scroll_x: False
+            do_scroll_y: True
             BoxLayout:
                 id: options_container
                 orientation: 'vertical'
                 spacing: dp(15)
                 size_hint_y: None
                 height: self.minimum_height
-
+                padding: [dp(10), dp(10)]
+        
+        
+        # Nut dieu huong
         BoxLayout:
             size_hint_y: None
-            height: dp(70)
-            spacing: dp(25)
+            height: dp(50)
+            spacing: dp(20)
+            pos_hint: {"center_x": 0.5}
 
             Button:
                 text: 'Quay lại'
-                font_size: "20sp"
-                background_color: 0.8, 0.8, 0.8, 1
-                color: 0.1, 0.1, 0.1, 1
+                font_size: "17sp"
+                bold: True
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                color: 0.25, 0.55, 0.95, 1
                 on_release: root.go_back()
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.08
+                    RoundedRectangle:
+                        pos: self.x, self.y - dp(1.5)
+                        size: self.width, self.height
+                        radius: [self.height / 2]
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [self.height / 2]
+                    Color:
+                        rgba: 0.25, 0.55, 0.95, 1
+                    Line:
+                        width: 1.5
+                        rounded_rectangle: [self.x, self.y, self.width, self.height, self.height / 2]
 
             Button:
                 id: next_button
                 text: 'Tiếp theo'
-                font_size: "20sp"
+                font_size: "17sp"
                 bold: True
-                background_color: 0.2, 0.5, 1, 1
+                background_normal: ""
+                background_color: 0, 0, 0, 0
                 color: 1, 1, 1, 1
                 on_release: root.next_question()
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.12
+                    RoundedRectangle:
+                        pos: self.x, self.y - dp(2)
+                        size: self.width, self.height
+                        radius: [self.height / 2]
+                    Color:
+                        rgba: 0.25, 0.55, 0.95, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [self.height / 2]
