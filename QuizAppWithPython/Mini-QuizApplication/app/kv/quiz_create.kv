@@ -61,6 +61,7 @@
                     size_hint_x: None
                     width: dp(100)
 
+            # ScrollView cho phần nội dung có thể cuộn
             ScrollView:
                 do_scroll_x: False
                 do_scroll_y: True
@@ -81,7 +82,6 @@
                         halign: "left"
                         size_hint_y: None
                         height: dp(30)
-                        size_hint_y: None
                         text_size: self.size
 
                     BoxLayout:
@@ -106,7 +106,6 @@
                             padding: [dp(15), dp(15)]
                             multiline: False
 
-
                     # --- Mô tả ---
                     Label:
                         text: "Mô tả Quiz (tuỳ chọn)"
@@ -117,7 +116,6 @@
                         height: dp(30)
                         text_size: self.size
                         valign: "middle"
-                        size_hint_y: None
 
                     BoxLayout:
                         size_hint_y: None
@@ -142,7 +140,6 @@
                             font_size: "18sp"
                             padding: [dp(15), dp(15)]
 
-                        
                     # --- Thời lượng ---
                     Label:
                         text: "Thời lượng (phút)"
@@ -178,7 +175,6 @@
                             padding: [dp(15), dp(15)]
                             multiline: False
 
-
                     # --- Container chứa câu hỏi ---
                     GridLayout:
                         id: question_container
@@ -187,41 +183,41 @@
                         height: self.minimum_height
                         spacing: dp(15)
 
-                    # --- Nút hành động ---
-                    BoxLayout:
-                        spacing: dp(20)
-                        size_hint_y: None
-                        height: dp(55)
-                        pos_hint: {"center_x": 0.5}
+            # --- Nút hành động (ĐÃ DI CHUYỂN RA NGOÀI SCROLLVIEW) ---
+            BoxLayout:
+                spacing: dp(20)
+                size_hint_y: None
+                height: dp(55)
+                pos_hint: {"center_x": 0.5}
 
-                        Button:
-                            text: "+ Thêm câu hỏi"
-                            font_size: "18sp"
-                            bold: True
-                            background_normal: ''
-                            background_color: 0, 0, 0, 0
-                            color: 1, 1, 1, 1
-                            on_release: root.add_question_block()
-                            canvas.before:
-                                Color:
-                                    rgba: 0.25, 0.55, 0.95, 1
-                                RoundedRectangle:
-                                    pos: self.pos
-                                    size: self.size
-                                    radius: [self.height / 2]
+                Button:
+                    text: "+ Thêm câu hỏi"
+                    font_size: "18sp"
+                    bold: True
+                    background_normal: ''
+                    background_color: 0, 0, 0, 0
+                    color: 1, 1, 1, 1
+                    on_release: root.add_question_block()
+                    canvas.before:
+                        Color:
+                            rgba: 0.25, 0.55, 0.95, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [self.height / 2]
 
-                        Button:
-                            text: "Lưu Quiz"
-                            font_size: "18sp"
-                            bold: True
-                            background_normal: ''
-                            background_color: 0, 0, 0, 0
-                            color: 1, 1, 1, 1
-                            on_release: root.add_question_block()
-                            canvas.before:
-                                Color:
-                                    rgba: 0.1, 0.6, 0.3, 1
-                                RoundedRectangle:
-                                    pos: self.pos
-                                    size: self.size
-                                    radius: [self.height / 2]
+                Button:
+                    text: "Lưu Quiz"
+                    font_size: "18sp"
+                    bold: True
+                    background_normal: ''
+                    background_color: 0, 0, 0, 0
+                    color: 1, 1, 1, 1
+                    on_release: root.save_quiz()
+                    canvas.before:
+                        Color:
+                            rgba: 0.1, 0.6, 0.3, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [self.height / 2]

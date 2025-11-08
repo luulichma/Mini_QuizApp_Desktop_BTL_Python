@@ -108,11 +108,12 @@
                 text: "Thư viện Quiz"
                 on_release: root.load_quiz_library()
                 ScrollView:
+                    id: quiz_scroll_view
                     GridLayout:
                         id: quiz_list
                         cols: 1
                         size_hint_y: None
-                        height: self.minimum_height
+                        height: max(self.minimum_height, quiz_scroll_view.height)
                         spacing: dp(15)
                         padding: [dp(20), dp(20)]
 
@@ -120,14 +121,31 @@
             TabbedPanelItem:
                 text: "Lớp học"
                 on_release: root.load_classes()
-                ScrollView:
-                    BoxLayout:
-                        id: class_list
-                        orientation: 'vertical'
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    padding: [dp(20), dp(10)]
+
+                    Button:
+                        text: "+ Tạo lớp học mới"
                         size_hint_y: None
-                        height: self.minimum_height
-                        spacing: dp(15)
-                        padding: [dp(20), dp(20)]
+                        height: dp(50)
+                        font_size: "18sp"
+                        bold: True
+                        background_normal: ""
+                        background_color: (0.2, 0.6, 0.2, 1)
+                        color: (1, 1, 1, 1)
+                        on_release: root.go_to_create_class()
+
+                    ScrollView:
+                        id: class_scroll_view
+                        BoxLayout:
+                            id: class_list
+                            orientation: 'vertical'
+                            size_hint_y: None
+                            height: max(self.minimum_height, class_scroll_view.height)
+                            spacing: dp(15)
+                            padding: [dp(0), dp(10)]
 
             # --- Account Tab ---
             TabbedPanelItem:

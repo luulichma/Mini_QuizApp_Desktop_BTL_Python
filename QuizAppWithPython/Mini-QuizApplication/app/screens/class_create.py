@@ -30,7 +30,7 @@ class ClassCreateScreen(Screen):
     def go_to_class_list(self, *args):
         self.clear_inputs()
         teacher_home = self.manager.get_screen("teacher_home")
-        teacher_home.switch_to_tab("Classes") # Assuming a 'Classes' tab exists
+        teacher_home.switch_to_tab("Lớp học")
         self.manager.current = "teacher_home"
 
     def clear_inputs(self):

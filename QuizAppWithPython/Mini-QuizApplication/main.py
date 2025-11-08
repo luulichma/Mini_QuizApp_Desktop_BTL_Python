@@ -17,7 +17,6 @@ from app.screens.login import LoginScreen
 from app.screens.register import RegisterScreen
 from app.screens.register_teacher import RegisterTeacherScreen
 from app.screens.register_student import RegisterStudentScreen
-from app.screens.home import HomeScreen
 from app.screens.student_home import StudentHomeScreen
 from app.screens.teacher_home import TeacherHomeScreen
 from app.screens.quiz_create import QuizCreateScreen
@@ -43,6 +42,8 @@ class QuizApp(MDApp):
         Builder.load_file("app/kv/result.kv")
         Builder.load_file("app/kv/class_create.kv")
         Builder.load_file("app/kv/class_details.kv")
+        Builder.load_file("app/kv/class_list.kv")
+        Builder.load_file("app/kv/quiz_history.kv")
 
         # Tạo ScreenManager và thêm các màn hình
         sm = ScreenManager()
@@ -58,7 +59,6 @@ class QuizApp(MDApp):
         sm.add_widget(ResultScreen(name="result_screen"))
         sm.add_widget(ClassCreateScreen(name="class_create"))
         sm.add_widget(ClassDetailsScreen(name="class_details"))
-        sm.add_widget(HomeScreen(name="home"))
 
         return sm
 

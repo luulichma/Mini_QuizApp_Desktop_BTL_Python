@@ -50,9 +50,6 @@ class TeacherHomeScreen(Screen):
                 ("ID Quiz", dp(80)),
                 ("Tên Quiz", dp(60)),
                 ("Mô tả", dp(100)),
-                ("Sửa", dp(25)),
-                ("Copy ID", dp(25)),
-                ("Xóa", dp(25)),
             ]
 
             row_data = [
@@ -60,36 +57,66 @@ class TeacherHomeScreen(Screen):
                     q['_id'], 
                     q['title'], 
                     q.get('description', 'Không có mô tả'),
-                    "Sửa",
-                    "Copy ID",
-                    "Xóa"
                 ) for q in quizzes
             ]
 
             data_table = MDDataTable(
                 size_hint=(1, None),
-                use_pagination=True,
+                use_pagination=False,  # Tắt phân trang nội bộ để tránh xung đột
                 check=False,
                 column_data=column_data,
                 row_data=row_data,
             )
-            data_table.height = dp(500)
+            # Tính toán chiều cao để hiển thị TẤT CẢ các hàng, với chiều cao tối thiểu
+            table_height = (len(quizzes) + 1) * dp(48)
+            min_height = dp(400)
+            data_table.height = max(table_height, min_height)
+            data_table.bind(on_row_press=self.on_quiz_row_press)
             quiz_list_layout.add_widget(data_table)
 
         except Exception as e:
             quiz_list_layout.add_widget(Label(text=f"Lỗi tải quiz: {e}", color=(1, 0, 0, 1), font_size=16))
 
     def on_quiz_row_press(self, instance_table, instance_row):
-        """Handles actions when a row in the quiz table is pressed."""
-        quiz_id = instance_row.table.row_data[instance_row.index][0]
-        column_name = instance_table.column_data[instance_row.column_index][0]
+        """
+        Khi một hàng được nhấn, hiển thị một Popup với các tùy chọn hành động.
+        """
+        # Lấy quiz_id từ dữ liệu hàng. Dùng try-except để phòng trường hợp lỗi.
+        try:
+            quiz_id = instance_table.row_data[instance_row.index][0]
+        except IndexError:
+            print(f"Lỗi: Không thể lấy quiz_id cho hàng có index {instance_row.index}")
+            return
 
-        if column_name == "Sửa":
-            self.edit_quiz(quiz_id)
-        elif column_name == "Copy ID" or column_name == "ID Quiz":
-            self.copy_quiz_id(quiz_id)
-        elif column_name == "Xóa":
-            self.prompt_delete_quiz(quiz_id)
+        # Tạo nội dung cho Popup
+        content = BoxLayout(orientation='vertical', spacing=dp(10), padding=dp(10))
+        
+        # Tạo các nút hành động
+        edit_btn = Button(text='Sửa Quiz', size_hint_y=None, height=dp(40))
+        copy_btn = Button(text='Copy ID', size_hint_y=None, height=dp(40))
+        delete_btn = Button(text='Xóa Quiz', size_hint_y=None, height=dp(40), background_color=(1, 0.2, 0.2, 1))
+
+        content.add_widget(edit_btn)
+        content.add_widget(copy_btn)
+        content.add_widget(delete_btn)
+
+        # Tạo Popup
+        popup = Popup(title=f"Hành động cho Quiz ID:\n{quiz_id}",
+                      content=content,
+                      size_hint=(0.5, 0.4))
+
+        # Gán hành động cho các nút (sử dụng partial để truyền tham số)
+        edit_btn.bind(on_release=lambda *_: self.edit_quiz(quiz_id))
+        copy_btn.bind(on_release=lambda *_: self.copy_quiz_id(quiz_id))
+        delete_btn.bind(on_release=lambda *_: self.prompt_delete_quiz(quiz_id))
+
+        # Đóng popup sau khi một hành động được chọn
+        edit_btn.bind(on_release=popup.dismiss)
+        copy_btn.bind(on_release=popup.dismiss)
+        delete_btn.bind(on_release=popup.dismiss)
+        
+        popup.open()
+
 
     def copy_quiz_id(self, quiz_id, *args):
         """Copies the quiz ID to the clipboard and shows a confirmation popup."""
@@ -212,6 +239,9 @@ class TeacherHomeScreen(Screen):
     def go_to_create_quiz(self):
         print("✅ Create Quiz clicked!")
         self.manager.current = "quiz_create"
+
+    def go_to_create_class(self):
+        self.manager.current = "class_create"
 
     def switch_to_tab(self, tab_name):
         """Chuyển đến một tab cụ thể bằng tên và tải nội dung của nó."""
