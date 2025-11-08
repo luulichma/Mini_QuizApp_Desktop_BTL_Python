@@ -1,86 +1,146 @@
 <LoginScreen>:
     canvas.before:
         Color:
-            rgba: 0.95, 0.95, 0.95, 1  # Light gray background
+            rgba: 1, 1, 1, 1
         Rectangle:
             pos: self.pos
             size: self.size
 
-    BoxLayout:
-        orientation: "vertical"
-        padding: dp(40)
-        spacing: dp(25)
-
-        Label:
-            text: "Chào mừng trở lại!"
-            font_size: "32sp"
-            bold: True
-            color: 0.1, 0.1, 0.1, 1
-
-        Label:
-            text: "Đăng nhập để tiếp tục"
-            font_size: "18sp"
-            color: 0.4, 0.4, 0.4, 1
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 0.93, 0.96, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
         BoxLayout:
-            size_hint_y: None
-            height: dp(60)
+            orientation: "vertical"
+            size_hint: 0.85, 0.65
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            spacing: dp(22)
+            padding: dp(30)
             canvas.before:
                 Color:
                     rgba: 1, 1, 1, 1
                 RoundedRectangle:
                     pos: self.pos
                     size: self.size
-                    radius: [15]
-            TextInput:
-                id: username
-                hint_text: "Tên đăng nhập"
-                multiline: False
-                background_color: 0, 0, 0, 0
-                foreground_color: 0.1, 0.1, 0.1, 1
-                font_size: "18sp"
-                padding: [20, 20, 20, 20]
-                cursor_color: 0.2, 0.5, 1, 1
-
-        BoxLayout:
-            size_hint_y: None
-            height: dp(60)
-            canvas.before:
+                    radius: [25]
                 Color:
-                    rgba: 1, 1, 1, 1
-                RoundedRectangle:
-                    pos: self.pos
-                    size: self.size
-                    radius: [15]
-            TextInput:
-                id: password
-                hint_text: "Mật khẩu"
-                password: True
-                multiline: False
-                background_color: 0, 0, 0, 0
-                foreground_color: 0.1, 0.1, 0.1, 1
+                    rgba: 0, 0, 0, 0.05
+                Line:
+                    width: 1.2
+                    rounded_rectangle: [self.x, self.y, self.width, self.height, 25]
+
+            # --- Tiêu đề ---
+            Label:
+                text: "Chào mừng trở lại!"
+                font_size: "30sp"
+                bold: True
+                color: 0.15, 0.15, 0.2, 1
+                size_hint_y: None
+                height: dp(40)
+                halign: "center"
+
+            Label:
+                text: "Đăng nhập để tiếp tục"
                 font_size: "18sp"
-                padding: [20, 20, 20, 20]
-                cursor_color: 0.2, 0.5, 1, 1
+                color: 0.4, 0.4, 0.4, 1
+                size_hint_y: None
+                height: dp(25)
+                halign: "center"
 
-        Button:
-            text: "Đăng nhập"
-            font_size: "20sp"
-            bold: True
-            background_color: 0.2, 0.5, 1, 1
-            color: 1, 1, 1, 1
-            size_hint_y: None
-            height: dp(60)
-            on_release: root.do_login(username.text, password.text)
+            # --- Ô nhập tên (viên thuốc) ---
+            BoxLayout:
+                size_hint: (0.75, None)
+                height: dp(45)
+                pos_hint: {"center_x": 0.5}
+                padding: dp(5)
+                canvas.before:
+                    Color:
+                        rgba: 0.96, 0.96, 0.96, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [22.5]
+                TextInput:
+                    id: username
+                    hint_text: "Tên đăng nhập"
+                    multiline: False
+                    background_color: 0, 0, 0, 0
+                    foreground_color: 0.1, 0.1, 0.1, 1
+                    font_size: "16sp"
+                    padding: [15, 12, 15, 12]
+                    cursor_color: 0.2, 0.5, 1, 1
 
-        Button:
-            text: "Chưa có tài khoản? Đăng ký"
-            font_size: "16sp"
-            background_color: 0, 0, 0, 0
-            color: 0.4, 0.4, 0.4, 1
-            on_release: app.root.current = "register"
+            # --- Ô nhập mật khẩu (viên thuốc) ---
+            BoxLayout:
+                size_hint: (0.75, None)
+                height: dp(45)
+                pos_hint: {"center_x": 0.5}
+                padding: dp(5)
+                canvas.before:
+                    Color:
+                        rgba: 0.96, 0.96, 0.96, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [22.5]
+                TextInput:
+                    id: password
+                    hint_text: "Mật khẩu"
+                    password: True
+                    multiline: False
+                    background_color: 0, 0, 0, 0
+                    foreground_color: 0.1, 0.1, 0.1, 1
+                    font_size: "16sp"
+                    padding: [15, 12, 15, 12]
+                    cursor_color: 0.2, 0.5, 1, 1
 
-        Label:
-            id: status
-            text: ""
-            color: 0.8, 0.2, 0.2, 1
+            # --- Nút đăng nhập (viên thuốc ngắn hơn) ---
+            Button:
+                text: "Đăng nhập"
+                font_size: "18sp"
+                bold: True
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                color: 1, 1, 1, 1
+                size_hint: (0.55, None)
+                height: dp(45)
+                pos_hint: {"center_x": 0.5}
+                on_release: root.do_login(username.text, password.text)
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.12
+                    RoundedRectangle:
+                        pos: self.x, self.y - dp(2)
+                        size: self.width, self.height
+                        radius: [22.5]
+                    Color:
+                        rgba: 0.25, 0.55, 0.95, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [22.5]
+
+            # --- Nút đăng ký ---
+            Button:
+                text: "Chưa có tài khoản? [b][color=#1976D2]Đăng ký[/color][/b]"
+                markup: True
+                font_size: "15sp"
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                color: 0.4, 0.4, 0.4, 1
+                size_hint_y: None
+                height: dp(45)
+                pos_hint: {"center_x": 0.5}
+                on_release: app.root.current = "register"
+
+            # --- Thông báo lỗi ---
+            Label:
+                id: status
+                text: ""
+                font_size: "14sp"
+                color: 0.8, 0.2, 0.2, 1
+                halign: "center"

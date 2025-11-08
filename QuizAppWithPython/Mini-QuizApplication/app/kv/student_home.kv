@@ -1,10 +1,6 @@
 #:kivy 2.1.0
 #:import Factory kivy.factory.Factory
 
-
-
-
-
 <StudentHomeScreen>:
     name: "student_home"
 
@@ -12,87 +8,180 @@
         orientation: "vertical"
         canvas.before:
             Color:
-                rgba: 0.95, 0.95, 0.95, 1
+                rgba: 0.93, 0.96, 1, 1  # ✅ Nền chính xanh nhạt
             Rectangle:
-                size: self.size
                 pos: self.pos
+                size: self.size
 
-        # Top bar
+        # --- Thanh tiêu đề ---
         BoxLayout:
             size_hint_y: None
-            height: dp(70)
-            padding: [dp(30), dp(15)]
-            background_color: 0.9, 0.1, 0.1, 1
+            height: dp(65)
+            padding: [dp(25), dp(10)]
+            spacing: dp(15)
+            canvas.before:
+                Color:
+                    rgba: 0.25, 0.55, 0.95, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
             Label:
                 text: "Quiz App"
-                font_size: "28sp"
+                font_size: "24sp"
                 bold: True
                 color: 1, 1, 1, 1
+                halign: "left"
+                valign: "middle"
 
+            # --- Nút Đăng xuất (màu đỏ, bo tròn) ---
             Button:
                 text: "Đăng xuất"
-                size_hint_x: 0.2
-                font_size: "18sp"
-                background_color: 1, 1, 1, 0.2
+                font_size: "16sp"
+                bold: True
+                background_normal: ""
+                background_down: ""
+                background_color: 0, 0, 0, 0
                 color: 1, 1, 1, 1
+                size_hint_x: None
+                width: dp(130)
+                height: dp(40)
                 on_release: root.logout()
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 0.15
+                    RoundedRectangle:
+                        pos: self.x, self.y - dp(2)
+                        size: self.width, self.height
+                        radius: [self.height / 2]
+                    Color:
+                        rgba: 0.9, 0.2, 0.2, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [self.height / 2]
 
-        # TabbedPanel
+        # --- Tabs chính ---
         TabbedPanel:
             id: content_tabs
             do_default_tab: True
+            default_tab: home_tab_item
             tab_pos: 'top_mid'
+            tab_height: dp(48)
+            background_color: 1, 1, 1, 1   # Nền trắng cho thanh tab
             tab_width: dp(180)
-            background_color: 0.95, 0.95, 0.95, 1
+            background_image: ''  # bỏ hình mặc định
+            tab_cls: Factory.TabButton
 
-            # --- Take Quiz Tab ---
+            # --- Tab Trang chủ ---
             TabbedPanelItem:
                 id: home_tab_item
                 text: "Trang chủ"
-                BoxLayout:
-                    orientation: "vertical"
-                    padding: dp(50)
-                    spacing: dp(25)
-
-                    Label:
-                        text: "Nhập ID Quiz hoặc Lớp học"
-                        font_size: "24sp"
-                        color: 0.1, 0.1, 0.1, 1
-
-                    TextInput:
-                        id: id_input
-                        hint_text: "ID"
-                        font_size: "20sp"
-                        multiline: False
-                        size_hint_y: None
-                        height: dp(60)
-                        padding: [20, 20, 20, 20]
-
+                FloatLayout:
                     BoxLayout:
-                        size_hint_y: None
-                        height: dp(60)
-                        spacing: dp(20)
-                        Button:
-                            text: "Bắt đầu Quiz"
-                            size_hint_y: None
-                            height: dp(60)
-                            font_size: "22sp"
-                            bold: True
-                            background_color: 0.2, 0.5, 1, 1
-                            color: 1, 1, 1, 1
-                            on_release: root.start_quiz_by_id()
-                        Button:
-                            text: "Tham gia Lớp"
-                            size_hint_y: None
-                            height: dp(60)
-                            font_size: "22sp"
-                            bold: True
-                            background_color: 0.1, 0.7, 0.3, 1 # Green color
-                            color: 1, 1, 1, 1
-                            on_release: root.join_class()
+                        orientation: "vertical"
+                        size_hint: 0.85, 0.55
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        padding: dp(40)
+                        spacing: dp(25)
+                        canvas.before:
+                            Color:
+                                rgba: 1, 1, 1, 1
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [25]
+                            Color:
+                                rgba: 0, 0, 0, 0.08
+                            Line:
+                                width: 1.2
+                                rounded_rectangle: [self.x, self.y, self.width, self.height, 25]
 
-            # --- My Classes Tab ---
+                        Label:
+                            text: "Nhập ID Quiz hoặc Lớp học"
+                            font_size: "22sp"
+                            color: 0.1, 0.1, 0.1, 1
+                            size_hint_y: None
+                            height: dp(35)
+
+                        BoxLayout:
+                            size_hint: (0.75, None)
+                            height: dp(45)
+                            pos_hint: {"center_x": 0.5}
+                            padding: dp(5)
+                            canvas.before:
+                                Color:
+                                    rgba: 0.96, 0.96, 0.96, 1
+                                RoundedRectangle:
+                                    pos: self.pos
+                                    size: self.size
+                                    radius: [22.5]
+                            TextInput:
+                                id: id_input
+                                hint_text: "Nhập ID"
+                                multiline: False
+                                background_color: 0, 0, 0, 0
+                                foreground_color: 0.1, 0.1, 0.1, 1
+                                font_size: "16sp"
+                                padding: [15, 12, 15, 12]
+                                cursor_color: 0.2, 0.5, 1, 1
+
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(50)
+                            spacing: dp(20)
+                            pos_hint: {"center_x": 0.5}
+
+                            Button:
+                                text: "Bắt đầu Quiz"
+                                font_size: "17sp"
+                                bold: True
+                                background_normal: ""
+                                background_color: 0, 0, 0, 0
+                                color: 1, 1, 1, 1
+                                on_release: root.start_quiz_by_id()
+                                canvas.before:
+                                    Color:
+                                        rgba: 0, 0, 0, 0.12
+                                    RoundedRectangle:
+                                        pos: self.x, self.y - dp(2)
+                                        size: self.width, self.height
+                                        radius: [self.height / 2]
+                                    Color:
+                                        rgba: 0.25, 0.55, 0.95, 1
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.size
+                                        radius: [self.height / 2]
+
+                            Button:
+                                text: "Tham gia Lớp"
+                                font_size: "17sp"
+                                bold: True
+                                background_normal: ""
+                                background_color: 0, 0, 0, 0
+                                color: 0.25, 0.55, 0.95, 1
+                                on_release: root.join_class()
+                                canvas.before:
+                                    Color:
+                                        rgba: 0, 0, 0, 0.08
+                                    RoundedRectangle:
+                                        pos: self.x, self.y - dp(1.5)
+                                        size: self.width, self.height
+                                        radius: [self.height / 2]
+                                    Color:
+                                        rgba: 1, 1, 1, 1
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.size
+                                        radius: [self.height / 2]
+                                    Color:
+                                        rgba: 0.25, 0.55, 0.95, 1
+                                    Line:
+                                        width: 1.5
+                                        rounded_rectangle: [self.x, self.y, self.width, self.height, self.height / 2]
+
+            # --- Tab Lớp học của tôi ---
             TabbedPanelItem:
                 text: "Lớp học của tôi"
                 on_release: root.load_my_classes()
@@ -105,7 +194,7 @@
                         spacing: dp(15)
                         padding: [dp(20), dp(20)]
 
-            # --- History Tab ---
+            # --- Tab Lịch sử ---
             TabbedPanelItem:
                 text: "Lịch sử"
                 on_release: root.load_history()
@@ -118,17 +207,161 @@
                         spacing: dp(15)
                         padding: [dp(20), dp(20)]
 
-            # --- Account Tab ---
+            # --- Tab Tài khoản ---
             TabbedPanelItem:
                 text: "Tài khoản"
                 BoxLayout:
                     orientation: "vertical"
-                    padding: dp(50)
+                    padding: dp(40)
                     spacing: dp(25)
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
-                    Button:
-                        text: "Đổi mật khẩu"
-                        size_hint_y: None
-                        height: dp(60)
-                        font_size: "20sp"
-                        on_release: root.go_to_change_password()
+                    # --- Hộp đổi mật khẩu ---
+                    BoxLayout:
+                        orientation: "vertical"
+                        size_hint: (0.75, None)
+                        height: dp(320)
+                        pos_hint: {"center_x": 0.5}
+                        padding: dp(25)
+                        spacing: dp(18)
+                        canvas.before:
+                            Color:
+                                rgba: 1, 1, 1, 1
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [25]
+                            Color:
+                                rgba: 0, 0, 0, 0.08
+                            Line:
+                                width: 1.2
+                                rounded_rectangle: [self.x, self.y, self.width, self.height, 25]
+
+                        Label:
+                            text: "Đổi mật khẩu"
+                            font_size: "22sp"
+                            bold: True
+                            color: 0.1, 0.1, 0.1, 1
+                            size_hint_y: None
+                            height: dp(30)
+
+                        # --- Các ô nhập bo tròn ---
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(45)
+                            canvas.before:
+                                Color:
+                                    rgba: 0.96, 0.96, 0.96, 1
+                                RoundedRectangle:
+                                    pos: self.pos
+                                    size: self.size
+                                    radius: [22.5]
+                            TextInput:
+                                hint_text: "Mật khẩu cũ"
+                                multiline: False
+                                password: True
+                                background_color: 0, 0, 0, 0
+                                padding: [15, 12, 15, 12]
+                                font_size: "16sp"
+
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(45)
+                            canvas.before:
+                                Color:
+                                    rgba: 0.96, 0.96, 0.96, 1
+                                RoundedRectangle:
+                                    pos: self.pos
+                                    size: self.size
+                                    radius: [22.5]
+                            TextInput:
+                                hint_text: "Mật khẩu mới"
+                                multiline: False
+                                password: True
+                                background_color: 0, 0, 0, 0
+                                padding: [15, 12, 15, 12]
+                                font_size: "16sp"
+
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(45)
+                            canvas.before:
+                                Color:
+                                    rgba: 0.96, 0.96, 0.96, 1
+                                RoundedRectangle:
+                                    pos: self.pos
+                                    size: self.size
+                                    radius: [22.5]
+                            TextInput:
+                                hint_text: "Nhập lại mật khẩu mới"
+                                multiline: False
+                                password: True
+                                background_color: 0, 0, 0, 0
+                                padding: [15, 12, 15, 12]
+                                font_size: "16sp"
+
+                        # --- Hai nút Lưu / Hủy ---
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(50)
+                            spacing: dp(20)
+                            pos_hint: {"center_x": 0.5}
+
+                            Button:
+                                text: "Lưu"
+                                font_size: "17sp"
+                                bold: True
+                                background_normal: ""
+                                background_color: 0, 0, 0, 0
+                                color: 1, 1, 1, 1
+                                on_release: root.go_to_change_password()
+                                canvas.before:
+                                    Color:
+                                        rgba: 0.25, 0.55, 0.95, 1
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.size
+                                        radius: [self.height / 2]
+
+                            Button:
+                                text: "Hủy"
+                                font_size: "17sp"
+                                bold: True
+                                background_normal: ""
+                                background_color: 0, 0, 0, 0
+                                color: 0.25, 0.55, 0.95, 1
+                                canvas.before:
+                                    Color:
+                                        rgba: 1, 1, 1, 1
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.size
+                                        radius: [self.height / 2]
+                                    Color:
+                                        rgba: 0.25, 0.55, 0.95, 1
+                                    Line:
+                                        width: 1.5
+                                        rounded_rectangle: [self.x, self.y, self.width, self.height, self.height / 2]
+
+# --- Nút Tab trên cùng (Trang chủ, Lịch sử, ...) ---
+<TabButton@ToggleButton>:
+    background_normal: ''
+    background_down: ''
+    size_hint_y: None
+    height: dp(48)
+    font_size: '17sp'
+    bold: True
+    border: [0, 0, 0, 0]
+    canvas.before:
+        Color:
+            rgba: (0.25, 0.55, 0.95, 1) if not self.state == 'down' else (0, 0, 0, 0)
+        Line:
+            width: 1.3
+            rounded_rectangle: [self.x, self.y, self.width, self.height, self.height / 2] if not self.state == 'down' else []
+        Color:
+            rgba: (1, 1, 1, 1) if not self.state == 'down' else (0.25, 0.55, 0.95, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.height / 2]
+    color: (0.25, 0.55, 0.95, 1) if not self.state == 'down' else (1, 1, 1, 1)
