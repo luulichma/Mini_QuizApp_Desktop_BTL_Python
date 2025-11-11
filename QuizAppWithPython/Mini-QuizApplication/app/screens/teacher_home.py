@@ -61,16 +61,14 @@ class TeacherHomeScreen(Screen):
             ]
 
             data_table = MDDataTable(
-                size_hint=(1, None),
-                use_pagination=False,  # Tắt phân trang nội bộ để tránh xung đột
+                size_hint=(1, 1),
+                use_pagination=True,  
+                rows_num=10,
                 check=False,
                 column_data=column_data,
                 row_data=row_data,
             )
-            # Tính toán chiều cao để hiển thị TẤT CẢ các hàng, với chiều cao tối thiểu
-            table_height = (len(quizzes) + 1) * dp(48)
-            min_height = dp(400)
-            data_table.height = max(table_height, min_height)
+            # ✅ FIX: Không set height cố định khi dùng pagination
             data_table.bind(on_row_press=self.on_quiz_row_press)
             quiz_list_layout.add_widget(data_table)
 
@@ -83,7 +81,9 @@ class TeacherHomeScreen(Screen):
         """
         # Lấy quiz_id từ dữ liệu hàng. Dùng try-except để phòng trường hợp lỗi.
         try:
-            quiz_id = instance_table.row_data[instance_row.index][0]
+            num_cols = len(instance_table.column_data)  # 3
+            row_num = instance_row.index // num_cols   # Tính row thực
+            quiz_id = instance_table.row_data[row_num][0]
         except IndexError:
             print(f"Lỗi: Không thể lấy quiz_id cho hàng có index {instance_row.index}")
             return
@@ -208,13 +208,14 @@ class TeacherHomeScreen(Screen):
             
             # Create MDDataTable
             data_table = MDDataTable(
-                size_hint=(1, None),
+                size_hint=(1, 1),  # ← FIX: Change to (1, 1) for auto-fill
                 use_pagination=True,
+                rows_num=8,  # ← Show 8 rows per page
                 check=False,
                 column_data=column_data,
                 row_data=row_data,
             )
-            data_table.height = (len(row_data) + 1) * dp(48)
+            # ✅ FIX: Không set height cố định khi dùng pagination
             # Bind on_row_press to handle "Chi tiết" button click
             data_table.bind(on_row_press=self.on_class_row_press)
             
@@ -225,7 +226,9 @@ class TeacherHomeScreen(Screen):
 
     def on_class_row_press(self, instance_table, instance_row):
         """Handles row press event for the class data table."""
-        class_id = instance_row.table.row_data[instance_row.index][0]
+        num_cols = len(instance_table.column_data)
+        row_num = instance_row.index // num_cols
+        class_id = instance_table.row_data[row_num][0]
         self.go_to_class_details(class_id)
 
     def go_to_class_details(self, class_id, *args):

@@ -84,13 +84,14 @@ class StudentHomeScreen(Screen):
                 row_data.append((cls['class_name'], cls.get('description', 'Không có mô tả'), created_at_str))
 
             data_table = MDDataTable(
-                size_hint=(1, None),
+                size_hint=(1, 1),  # ← FIX: Auto-fill parent
                 use_pagination=True,
+                rows_num=8,
                 check=False,
                 column_data=column_data,
                 row_data=row_data,
             )
-            data_table.height = dp(500)
+            # ✅ FIX: Không set height cố định
             my_classes_list_layout.add_widget(data_table)
 
         except Exception as e:
@@ -125,13 +126,14 @@ class StudentHomeScreen(Screen):
                 row_data.append((res['quiz_title'], res['score'], submitted_date))
 
             data_table = MDDataTable(
-                size_hint=(1, None),
+                size_hint=(1, 1),  # ← FIX: Auto-fill parent
                 use_pagination=True,
+                rows_num=8,
                 check=False,
                 column_data=column_data,
                 row_data=row_data,
             )
-            data_table.height = dp(500)
+            # ✅ FIX: Không set height cố định
             history_list_layout.add_widget(data_table)
 
         except Exception as e:
