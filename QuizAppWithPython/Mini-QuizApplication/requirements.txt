@@ -3,3 +3,4 @@ kivymd
 pymongo
 python-dotenv
 dnspython
+openai

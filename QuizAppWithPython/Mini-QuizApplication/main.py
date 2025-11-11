@@ -26,6 +26,7 @@ from app.screens.result import ResultScreen
 
 from app.screens.class_create import ClassCreateScreen
 from app.screens.class_details import ClassDetailsScreen
+from app.screens.chatbot import ChatbotScreen
 
 class QuizApp(MDApp):
     def build(self):
@@ -44,6 +45,7 @@ class QuizApp(MDApp):
         Builder.load_file("app/kv/class_details.kv")
         Builder.load_file("app/kv/class_list.kv")
         Builder.load_file("app/kv/quiz_history.kv")
+        Builder.load_file("app/kv/chatbot.kv")
 
         # Tạo ScreenManager và thêm các màn hình
         sm = ScreenManager()
@@ -59,6 +61,7 @@ class QuizApp(MDApp):
         sm.add_widget(ResultScreen(name="result_screen"))
         sm.add_widget(ClassCreateScreen(name="class_create"))
         sm.add_widget(ClassDetailsScreen(name="class_details"))
+        sm.add_widget(ChatbotScreen(name="chatbot"))
 
         return sm
 
