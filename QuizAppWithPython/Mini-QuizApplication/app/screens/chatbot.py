@@ -104,13 +104,18 @@ class ChatbotScreen(Screen):
         """Navigate back to home screen based on current user role"""
         try:
             app = App.get_running_app()
-            if hasattr(app, 'current_user_role'):
-                if app.current_user_role == 'teacher':
-                    self.manager.current = 'teacher_home'
-                else:
-                    self.manager.current = 'student_home'
+            # Prefer explicit app.current_user_role if set
+            role = None
+            if hasattr(app, 'current_user_role') and app.current_user_role:
+                role = app.current_user_role
+            # Fall back to app.user dict set by login
+            elif hasattr(app, 'user') and isinstance(app.user, dict):
+                role = app.user.get('role')
+
+            if role == 'teacher':
+                self.manager.current = 'teacher_home'
             else:
-                # Default fallback
+                # default and student both go to student_home
                 self.manager.current = 'student_home'
         except Exception:
             self.manager.current = 'student_home'
